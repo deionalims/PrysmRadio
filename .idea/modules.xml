@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/PrysmRadio.iml" filepath="$PROJECT_DIR$/PrysmRadio.iml" />
+      <module fileurl="file://$PROJECT_DIR$/prysmradio/prysmradio.iml" filepath="$PROJECT_DIR$/prysmradio/prysmradio.iml" />
+    </modules>
+  </component>
+</project>
+
