@@ -27,10 +27,6 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
                 return new PrysmFragment();
             case 2:
                 return new PrysmFragment();
-            case 3:
-                return new PrysmFragment();
-            case 4:
-                return new PrysmFragment();
             default:
                 return null;
         }
@@ -38,6 +34,6 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 5;
+        return 3;
     }
 }
