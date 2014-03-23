@@ -8,6 +8,9 @@
     <string name="tab_prysmradio">Prysm</string>
     <string name="tab_podcasts">Podcasts</string>
 
-    <string name="radio_url">http://mp3kh.live.tv-radio.com/2694/prysm/prysm-aac.mp3</string>
+    <string name="radio_url">http://streaming.streamonomy.com/prysmradio-aac</string>
+    <string name="prysm_url">http://www.prysmradio.com/</string>
 
+    <string name="title">Title: %s</string>
+    <string name="artist">Artist: %s</string>
 </resources>

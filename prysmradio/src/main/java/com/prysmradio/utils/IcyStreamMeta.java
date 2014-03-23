@@ -11,15 +11,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class IcyStreamMeta {
-
+public class IcyStreamMeta
+{
     protected URL streamUrl;
     private Map<String, String> metadata;
     private boolean isError;
+    private Map<String, String> data;
 
-    public IcyStreamMeta(URL streamUrl) {
-        setStreamUrl(streamUrl);
-
+    public IcyStreamMeta()
+    {
         isError = false;
     }
 
@@ -29,8 +29,8 @@ public class IcyStreamMeta {
      * @return String
      * @throws IOException
      */
-    public String getArtist() throws IOException {
-        Map<String, String> data = getMetadata();
+    public String getTitle() throws IOException {
+        data = getMetadata();
 
         if (!data.containsKey("StreamTitle"))
             return "";
@@ -41,13 +41,29 @@ public class IcyStreamMeta {
     }
 
     /**
+     * Get streamTitle
+     *
+     * @return String
+     * @throws IOException
+     */
+    public String getStreamTitle() throws IOException
+    {
+        data = getMetadata();
+
+        if (!data.containsKey("StreamTitle"))
+            return "";
+
+        return data.get("StreamTitle");
+    }
+
+    /**
      * Get title using stream's title
      *
      * @return String
      * @throws IOException
      */
-    public String getTitle() throws IOException {
-        Map<String, String> data = getMetadata();
+    public String getArtist() throws IOException {
+        data = getMetadata();
 
         if (!data.containsKey("StreamTitle"))
             return "";
@@ -65,17 +81,18 @@ public class IcyStreamMeta {
         return metadata;
     }
 
-    public void refreshMeta() throws IOException {
+    synchronized public void refreshMeta() throws IOException
+    {
         retreiveMetadata();
     }
 
-    private void retreiveMetadata() throws IOException {
+    synchronized private void retreiveMetadata() throws IOException
+    {
         URLConnection con = streamUrl.openConnection();
         con.setRequestProperty("Icy-MetaData", "1");
         con.setRequestProperty("Connection", "close");
         con.setRequestProperty("Accept", null);
         con.connect();
-
         int metaDataOffset = 0;
         Map<String, List<String>> headers = con.getHeaderFields();
         InputStream stream = con.getInputStream();
@@ -87,7 +104,8 @@ public class IcyStreamMeta {
             // Headers are sent within a stream
             StringBuilder strHeaders = new StringBuilder();
             char c;
-            while ((c = (char)stream.read()) != -1) {
+            while ((c = (char)stream.read()) != -1)
+            {
                 strHeaders.append(c);
                 if (strHeaders.length() > 5 && (strHeaders.substring((strHeaders.length() - 4), strHeaders.length()).equals("\r\n\r\n"))) {
                     // end of headers
@@ -98,13 +116,15 @@ public class IcyStreamMeta {
             // Match headers to get metadata offset within a stream
             Pattern p = Pattern.compile("\\r\\n(icy-metaint):\\s*(.*)\\r\\n");
             Matcher m = p.matcher(strHeaders.toString());
-            if (m.find()) {
+            if (m.find())
+            {
                 metaDataOffset = Integer.parseInt(m.group(2));
             }
         }
 
         // In case no data was sent
-        if (metaDataOffset == 0) {
+        if (metaDataOffset == 0)
+        {
             isError = true;
             return;
         }
@@ -126,18 +146,22 @@ public class IcyStreamMeta {
 
             if (count > metaDataOffset + 1 && count < (metaDataOffset + metaDataLength)) {
                 inData = true;
-            } else {
+            }
+            else
+            {
                 inData = false;
             }
-            if (inData) {
-                if (b != 0) {
+            if (inData)
+            {
+                if (b != 0)
+                {
                     metaData.append((char)b);
                 }
             }
-            if (count > (metaDataOffset + metaDataLength)) {
+            if (count > (metaDataOffset + metaDataLength))
+            {
                 break;
             }
-
         }
 
         // Set the data
@@ -145,6 +169,7 @@ public class IcyStreamMeta {
 
         // Close
         stream.close();
+
     }
 
     public boolean isError() {
@@ -161,7 +186,8 @@ public class IcyStreamMeta {
         this.isError = false;
     }
 
-    public static Map<String, String> parseMetadata(String metaString) {
+    public static Map<String, String> parseMetadata(String metaString)
+    {
         Map<String, String> metadata = new HashMap();
         String[] metaParts = metaString.split(";");
         Pattern p = Pattern.compile("^([a-zA-Z]+)=\\'([^\\']*)\\'$");

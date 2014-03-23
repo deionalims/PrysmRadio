@@ -6,45 +6,75 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
-import com.prysmradio.events.CheckPlayingEvent;
-import com.prysmradio.events.CheckPlayingReturnEvent;
+import com.prysmradio.events.UpdateMetaDataEvent;
+import com.prysmradio.events.UpdatePlayerEvent;
+import com.prysmradio.utils.BackgroundExecutor;
 import com.prysmradio.utils.Constants;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
+import com.prysmradio.utils.IcyStreamMeta;
 
 import java.io.IOException;
+import java.net.URL;
 
 
 public class MediaPlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, AudioManager.OnAudioFocusChangeListener {
 
     private MediaPlayer mMediaPlayer = null;
-    private Bus bus;
+    private Handler metadataHandler;
+    private Runnable metadataChecker;
+    private AudioManager audioManager;
+
+    private IcyStreamMeta icyStreamMeta;
 
     @Override
     public void onCreate() {
+
+        metadataHandler = new Handler();
+        metadataChecker = new Runnable() {
+            @Override
+            public void run() {
+                retrieveMetaData();
+                metadataHandler.postDelayed(metadataChecker, 10000);
+            }
+        };
+
+        icyStreamMeta = new IcyStreamMeta();
+
         mMediaPlayer = new MediaPlayer();
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mMediaPlayer.setOnPreparedListener(this);
         mMediaPlayer.setOnErrorListener(this);
 
-        bus = new Bus();
-        bus.register(this);
+        TelephonyManager mgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+        if( mgr != null )
+            mgr.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
+        ((PrysmApplication) getApplicationContext()).getBus().register(this);
     }
 
     @Override
     public void onDestroy() {
+
+        ((PrysmApplication) getApplicationContext()).getBus().unregister(this);
+
+        TelephonyManager mgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+        if( mgr != null )
+            mgr.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
+
         if (mMediaPlayer != null){
             mMediaPlayer.release();
             mMediaPlayer = null;
         }
-        bus.unregister(this);
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -62,15 +92,50 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
 
     private synchronized void init() {
         try {
+            ((PrysmApplication) getApplicationContext()).getBus().post(new UpdatePlayerEvent(false, true));
             mMediaPlayer.setDataSource(this, Uri.parse(getString(R.string.radio_url))); // Go to Initialized state
             mMediaPlayer.prepareAsync(); // prepare async to not block main thread
+
+            icyStreamMeta.setStreamUrl(new URL(getString(R.string.radio_url)));
+            metadataChecker.run();
+
         } catch (IOException e) {
-            mMediaPlayer.reset();
+            resetPlayer();
         }
+    }
+
+    private void retrieveMetaData(){
+        BackgroundExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Log.v("MICHEL", "Getting metadata");
+                    icyStreamMeta.refreshMeta();
+                } catch (IOException e){
+                    Log.e(getString(R.string.app_name), e.getMessage());
+                }
+            }
+        }, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Log.v("MICHEL", "Metadata retrieved " + icyStreamMeta.getStreamTitle());
+                    if (!TextUtils.isEmpty(icyStreamMeta.getStreamTitle())){
+
+                        UpdateMetaDataEvent event = new UpdateMetaDataEvent(icyStreamMeta.getArtist(), icyStreamMeta.getTitle());
+                        ((PrysmApplication) getApplicationContext()).getBus().post(event);
+                    }
+                } catch (IOException e){
+                    Log.e(getString(R.string.app_name), e.getMessage());
+                }
+
+            }
+        });
     }
 
     private synchronized void start() {
         mMediaPlayer.start();
+        ((PrysmApplication) getApplicationContext()).getBus().post(new UpdatePlayerEvent(true, false));
         startForeground(Constants.NOTIFICATION_ID, ((PrysmApplication) getApplicationContext()).getNotificationHandler().getNotification());
     }
 
@@ -81,13 +146,15 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
 
         resetPlayer();
         stopForeground(true);
-
+        audioManager.abandonAudioFocus(this);
         stopSelf();
     }
 
     private synchronized void resetPlayer() {
         mMediaPlayer.reset();
         mMediaPlayer = null;
+        ((PrysmApplication) getApplicationContext()).getBus().post(new UpdatePlayerEvent(false, false));
+        metadataHandler.removeCallbacks(metadataChecker);
     }
 
 
@@ -98,7 +165,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
         int result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC,
                 AudioManager.AUDIOFOCUS_GAIN);
 
@@ -128,10 +195,15 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
 
             case AudioManager.AUDIOFOCUS_LOSS:
                 // Lost focus for an unbounded amount of time: stop playback and release media player
-                if (mMediaPlayer.isPlaying()) {
-                    mMediaPlayer.stop();
+                try {
+                    if (mMediaPlayer.isPlaying()) {
+                        mMediaPlayer.stop();
+                    }
+                    resetPlayer();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                resetPlayer();
+
                 break;
 
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
@@ -143,14 +215,6 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
                 }
                 break;
 
-        }
-    }
-
-    @Subscribe
-    public void onCheckPlayingEvent(CheckPlayingEvent event){
-        if (event.isShouldCheckPlaying()){
-            Log.v(getString(R.string.app_name), "Checking playback !");
-            bus.post(new CheckPlayingReturnEvent(true));
         }
     }
 

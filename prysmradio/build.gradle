@@ -5,12 +5,19 @@ android {
     buildToolsVersion '19.0.0'
 
     defaultConfig {
-        minSdkVersion 10
+        minSdkVersion 11
         targetSdkVersion 19
         versionCode 1
         versionName "1.0"
     }
     buildTypes {
+
+        debug {
+            signingConfig signingConfigs.debug
+            debuggable true
+            zipAlign true
+        }
+
         release {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
@@ -24,4 +31,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.jakewharton:butterknife:4.0.+'
     compile 'com.squareup:otto:1.3.4'
+    compile 'com.squareup.retrofit:retrofit:1.5.0'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.1'
 }

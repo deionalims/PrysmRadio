@@ -16,15 +16,5 @@
             android:scaleType="centerInside"
             android:src="@drawable/prysm_logo"/>
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
-
         </FrameLayout>
-
-
-
-
-
 </LinearLayout>

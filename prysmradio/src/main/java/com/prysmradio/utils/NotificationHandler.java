@@ -27,11 +27,12 @@ public class NotificationHandler {
         // The PendingIntent to launch our activity if the user selects this notification
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
 
-        mNotifyObj = new Notification();
-        mNotifyObj.icon = R.drawable.prysm_logo;
-        mNotifyObj.flags |= Notification.FLAG_ONGOING_EVENT;
-        mNotifyObj.contentView = mNotifyView;
-        mNotifyObj.contentIntent = contentIntent;
+        mNotifyObj = new Notification.Builder(context)
+                .setContent(mNotifyView)
+                .setSmallIcon(R.drawable.prysm_logo)
+                .setOngoing(true)
+                .setContentIntent(contentIntent)
+                .getNotification();
     }
 
     public void destroy()
