@@ -1,4 +1,4 @@
-package com.prysmradio.events;
+package com.prysmradio.bus.events;
 
 import com.prysmradio.objects.Podcast;
 

@@ -1,4 +1,4 @@
-package com.prysmradio.events;
+package com.prysmradio.bus.events;
 
 /**
  * Created by fxoxe_000 on 15/03/14.

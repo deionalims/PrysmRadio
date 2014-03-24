@@ -20,8 +20,9 @@ import android.widget.TextView;
 import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
 import com.prysmradio.adapters.MainPagerAdapter;
-import com.prysmradio.events.UpdateMetaDataEvent;
-import com.prysmradio.events.UpdatePlayerEvent;
+import com.prysmradio.bus.events.BusManager;
+import com.prysmradio.bus.events.UpdateMetaDataEvent;
+import com.prysmradio.bus.events.UpdatePlayerEvent;
 import com.prysmradio.services.MediaPlayerService;
 import com.prysmradio.utils.Constants;
 import com.squareup.otto.Subscribe;
@@ -74,13 +75,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @Override
     protected void onResume() {
         super.onResume();
-        ((PrysmApplication) getApplicationContext()).getBus().register(this);
+        BusManager.getInstance().getBus().register(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        ((PrysmApplication) getApplicationContext()).getBus().unregister(this);
+        BusManager.getInstance().getBus().unregister(this);
     }
 
     @Override
@@ -105,6 +106,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
         mainViewPager.setCurrentItem(tab.getPosition());
+
+        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
@@ -159,17 +162,5 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             }
         }
         return false;
-    }
-
-    @Override
-    public void onBackPressed() {
-
-        FragmentManager fm = getSupportFragmentManager();
-
-        if (fm.getBackStackEntryCount() > 0){
-            fm.popBackStackImmediate();
-        } else {
-            super.onBackPressed();
-        }
     }
 }

@@ -15,8 +15,9 @@ import android.util.Log;
 
 import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
-import com.prysmradio.events.UpdateMetaDataEvent;
-import com.prysmradio.events.UpdatePlayerEvent;
+import com.prysmradio.bus.events.BusManager;
+import com.prysmradio.bus.events.UpdateMetaDataEvent;
+import com.prysmradio.bus.events.UpdatePlayerEvent;
 import com.prysmradio.utils.BackgroundExecutor;
 import com.prysmradio.utils.Constants;
 import com.prysmradio.utils.IcyStreamMeta;
@@ -59,13 +60,13 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
 
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
-        ((PrysmApplication) getApplicationContext()).getBus().register(this);
+        BusManager.getInstance().getBus().register(this);
     }
 
     @Override
     public void onDestroy() {
 
-        ((PrysmApplication) getApplicationContext()).getBus().unregister(this);
+        BusManager.getInstance().getBus().unregister(this);
 
         TelephonyManager mgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
         if( mgr != null )
@@ -92,7 +93,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
 
     private synchronized void init() {
         try {
-            ((PrysmApplication) getApplicationContext()).getBus().post(new UpdatePlayerEvent(false, true));
+            BusManager.getInstance().getBus().post(new UpdatePlayerEvent(false, true));
             mMediaPlayer.setDataSource(this, Uri.parse(getString(R.string.radio_url))); // Go to Initialized state
             mMediaPlayer.prepareAsync(); // prepare async to not block main thread
 
@@ -123,7 +124,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
                     if (!TextUtils.isEmpty(icyStreamMeta.getStreamTitle())){
 
                         UpdateMetaDataEvent event = new UpdateMetaDataEvent(icyStreamMeta.getArtist(), icyStreamMeta.getTitle());
-                        ((PrysmApplication) getApplicationContext()).getBus().post(event);
+                        BusManager.getInstance().getBus().post(event);
                     }
                 } catch (IOException e){
                     Log.e(getString(R.string.app_name), e.getMessage());
@@ -135,7 +136,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
 
     private synchronized void start() {
         mMediaPlayer.start();
-        ((PrysmApplication) getApplicationContext()).getBus().post(new UpdatePlayerEvent(true, false));
+        BusManager.getInstance().getBus().post(new UpdatePlayerEvent(true, false));
         startForeground(Constants.NOTIFICATION_ID, ((PrysmApplication) getApplicationContext()).getNotificationHandler().getNotification());
     }
 
@@ -153,7 +154,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     private synchronized void resetPlayer() {
         mMediaPlayer.reset();
         mMediaPlayer = null;
-        ((PrysmApplication) getApplicationContext()).getBus().post(new UpdatePlayerEvent(false, false));
+        BusManager.getInstance().getBus().post(new UpdatePlayerEvent(false, false));
         metadataHandler.removeCallbacks(metadataChecker);
     }
 
