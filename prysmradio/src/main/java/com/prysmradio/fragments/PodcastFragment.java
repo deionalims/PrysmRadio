@@ -1,5 +1,6 @@
 package com.prysmradio.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,8 @@ import com.prysmradio.bus.events.BusManager;
 import com.prysmradio.bus.events.PodcastEvent;
 import com.prysmradio.bus.events.RetroFitErrorEvent;
 import com.prysmradio.objects.Podcast;
+import com.prysmradio.objects.PodcastEpisode;
+import com.prysmradio.utils.Constants;
 import com.prysmradio.utils.CroutonHelper;
 import com.squareup.otto.Subscribe;
 
@@ -74,6 +77,7 @@ public class PodcastFragment extends PrysmFragment implements AdapterView.OnItem
     public void onPodcastEvent(PodcastEvent event){
         progressBar.setVisibility(View.GONE);
         if (event.getPodcast() != null){
+            podcast = event.getPodcast();
             EpisodeAdapter adapter = new EpisodeAdapter(getActivity(), event.getPodcast().getEpisodes());
             episodesListView.setAdapter(adapter);
         }
@@ -87,7 +91,14 @@ public class PodcastFragment extends PrysmFragment implements AdapterView.OnItem
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        PodcastEpisode episode = podcast.getEpisodes().get(i);
 
+        Intent intent = new Intent(Constants.START_SERVICE_ACTION);
+        intent.putExtra(Constants.PODCAST_TITLE_EXTRA, episode.getTitle());
+        intent.putExtra(Constants.EPISODE_TITLE_EXTRA, episode.getSubtitle());
+        intent.putExtra(Constants.AUDIO_URL_EXTRA, episode.getAudioUrl());
+
+        getActivity().startService(intent);
     }
 
     public void setPodcast(Podcast podcast) {

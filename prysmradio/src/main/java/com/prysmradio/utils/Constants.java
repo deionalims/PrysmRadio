@@ -12,4 +12,8 @@ public class Constants {
     public static final String START_SERVICE_METADATA_ACTION = "com.prysmradio.service_metadata_start";
     public static final String STOP_SERVICE_METADATA_ACTION = "com.prysmradio.service_metadata_stop";
 
+    // EXTRAS
+    public static final String AUDIO_URL_EXTRA = "audio_url_extra";
+    public static final String PODCAST_TITLE_EXTRA = "podcast_title_extra";
+    public static final String EPISODE_TITLE_EXTRA = "episode_title_extra";
 }

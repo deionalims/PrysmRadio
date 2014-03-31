@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.prysmradio.fragments.PodcastsFragment;
-import com.prysmradio.fragments.PrysmFragment;
+import com.prysmradio.fragments.PrysmContentFragment;
 import com.prysmradio.fragments.RadioFragment;
 
 /**
@@ -27,7 +27,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return new PodcastsFragment();
             case 2:
-                return new PrysmFragment();
+                return new PrysmContentFragment();
             default:
                 return null;
         }

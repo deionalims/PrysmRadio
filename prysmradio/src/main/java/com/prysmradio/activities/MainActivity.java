@@ -16,13 +16,16 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
 import com.prysmradio.adapters.MainPagerAdapter;
 import com.prysmradio.bus.events.BusManager;
+import com.prysmradio.bus.events.MediaPlayerErrorEvent;
 import com.prysmradio.bus.events.UpdateMetaDataEvent;
 import com.prysmradio.bus.events.UpdatePlayerEvent;
+import com.prysmradio.bus.events.UpdatePodcastTitleEvent;
 import com.prysmradio.services.MediaPlayerService;
 import com.prysmradio.utils.Constants;
 import com.squareup.otto.Subscribe;
@@ -33,8 +36,6 @@ import butterknife.OnClick;
 
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
-
-
 
     @InjectView(R.id.pager) ViewPager mainViewPager;
     @InjectView(R.id.play_pause_button) ImageView playPauseImageView;
@@ -50,6 +51,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         setContentView(R.layout.activity_main);
 
         ButterKnife.inject(this);
+
+        mainViewPager.setOffscreenPageLimit(2);
         MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
         mainViewPager.setAdapter(adapter);
 
@@ -121,23 +124,25 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @OnClick(R.id.play_pause_button)
     public void playPauseOnClick(View v){
         if (!((PrysmApplication) getApplicationContext()).isServiceIsRunning()){
-            startService(new Intent(Constants.START_SERVICE_ACTION));
-            ((PrysmApplication) getApplicationContext()).setServiceIsRunning(true);
+            Intent intent = new Intent(Constants.START_SERVICE_ACTION);
+            intent.putExtra(Constants.AUDIO_URL_EXTRA, getString(R.string.radio_url));
+            startService(new Intent(intent));
         } else {
             startService(new Intent(Constants.STOP_SERVICE_ACTION));
-            ((PrysmApplication) getApplicationContext()).setServiceIsRunning(false);
         }
     }
 
     @Subscribe
     public void onUpdatePlayerEventReceived(UpdatePlayerEvent event){
-
         if (event.isBuffering()){
+            ((PrysmApplication) getApplicationContext()).setServiceIsRunning(true);
             setProgressBarIndeterminateVisibility(true);
             playPauseImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_stop));
         } else if (event.isPlaying()){
+            ((PrysmApplication) getApplicationContext()).setServiceIsRunning(true);
             setProgressBarIndeterminateVisibility(false);
         } else {
+            ((PrysmApplication) getApplicationContext()).setServiceIsRunning(false);
             playPauseImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_play));
             artistTextView.setText("");
             titleTextView.setText("");
@@ -152,6 +157,21 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         if (!TextUtils.isEmpty(event.getTitle())){
             titleTextView.setText(String.format(getString(R.string.title), event.getTitle()));
         }
+    }
+
+    @Subscribe
+    public void onUpdatePodcastTitleEventReceived(UpdatePodcastTitleEvent event){
+        if (!TextUtils.isEmpty(event.getPodcastTitle())){
+            artistTextView.setText(event.getPodcastTitle());
+        }
+        if (!TextUtils.isEmpty(event.getEpisodeTitle())){
+            titleTextView.setText(event.getEpisodeTitle());
+        }
+    }
+
+    @Subscribe
+    public void onMediaPlayerErrorEventReceived(MediaPlayerErrorEvent event){
+        Toast.makeText(this, event.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     private boolean isMyServiceRunning() {

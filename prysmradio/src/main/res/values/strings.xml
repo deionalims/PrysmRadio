@@ -13,4 +13,6 @@
 
     <string name="title">Title: %s</string>
     <string name="artist">Artist: %s</string>
+
+    <string name="media_player_is_busy">Media Player is busy.</string>
 </resources>

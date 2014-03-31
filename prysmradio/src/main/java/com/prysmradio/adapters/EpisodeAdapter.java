@@ -25,6 +25,7 @@ public class EpisodeAdapter extends BaseAdapter {
     public EpisodeAdapter(Activity ctx, List<PodcastEpisode> list){
         context = ctx;
         episodes = list;
+        itemviews = new SparseArray<View>();
     }
 
     @Override
