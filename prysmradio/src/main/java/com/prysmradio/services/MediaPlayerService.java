@@ -16,7 +16,6 @@ import android.util.Log;
 import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
 import com.prysmradio.bus.events.BusManager;
-import com.prysmradio.bus.events.MediaPlayerErrorEvent;
 import com.prysmradio.bus.events.UpdateMetaDataEvent;
 import com.prysmradio.bus.events.UpdatePlayerEvent;
 import com.prysmradio.bus.events.UpdatePodcastTitleEvent;
@@ -25,6 +24,7 @@ import com.prysmradio.utils.Constants;
 import com.prysmradio.utils.IcyStreamMeta;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 
@@ -42,6 +42,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     }
 
     private String audioUrl;
+    private String pendingAudioUrl;
 
     private MediaPlayer mMediaPlayer = null;
     private Handler metadataHandler;
@@ -50,6 +51,8 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
 
     private MediaPlayerState state;
     private IcyStreamMeta icyStreamMeta;
+
+    private boolean shouldStartAfterPrepare;
 
     @Override
     public void onCreate() {
@@ -69,6 +72,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mMediaPlayer.setOnPreparedListener(this);
         mMediaPlayer.setOnErrorListener(this);
+        mMediaPlayer.setVolume(0,5f);
 
         TelephonyManager mgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
         if( mgr != null )
@@ -77,6 +81,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         state = MediaPlayerState.IDLE;
+        shouldStartAfterPrepare = true;
 
         BusManager.getInstance().getBus().register(this);
     }
@@ -99,34 +104,8 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         String action = intent.getAction();
-        audioUrl = intent.getStringExtra(Constants.AUDIO_URL_EXTRA);
 
         if (action.equals(Constants.START_SERVICE_ACTION)) {
-            init(intent);
-        } else if (action.equals(Constants.STOP_SERVICE_ACTION)) {
-            stop();
-        }
-
-        return START_NOT_STICKY;
-    }
-
-    private synchronized void init(Intent intent) {
-
-        if (state == MediaPlayerState.PREPARING){
-            BusManager.getInstance().getBus().post(new MediaPlayerErrorEvent(getString(R.string.media_player_is_busy)));
-            return;
-        }
-
-        try {
-            BusManager.getInstance().getBus().post(new UpdatePlayerEvent(false, true));
-            if (state == MediaPlayerState.STARTED || state == MediaPlayerState.PAUSED){
-                mMediaPlayer.stop();
-                mMediaPlayer.reset();
-            }
-            mMediaPlayer.setDataSource(this, Uri.parse(audioUrl)); // Go to Initialized state
-            state = MediaPlayerState.INITIALIZED;
-            mMediaPlayer.prepareAsync(); // prepare async to not block main thread
-            state = MediaPlayerState.PREPARING;
 
             if (intent.hasExtra(Constants.PODCAST_TITLE_EXTRA)){
                 metadataHandler.removeCallbacks(metadataChecker);
@@ -135,9 +114,52 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
                 UpdatePodcastTitleEvent event = new UpdatePodcastTitleEvent(podcastTitle, episodeTitle);
                 BusManager.getInstance().getBus().post(event);
             } else {
-                icyStreamMeta.setStreamUrl(new URL(getString(R.string.radio_url)));
-                metadataChecker.run();
+                try {
+                    icyStreamMeta.setStreamUrl(new URL(getString(R.string.radio_url)));
+                    metadataChecker.run();
+                } catch (MalformedURLException e){
+                    Log.e(getString(R.string.app_name), e.getMessage());
+                }
             }
+
+            if (state == MediaPlayerState.PREPARING) {
+                BusManager.getInstance().getBus().post(new UpdatePlayerEvent(false, true));
+                shouldStartAfterPrepare = true;
+                if (audioUrl != null &&
+                    !audioUrl.equals(intent.getStringExtra(Constants.AUDIO_URL_EXTRA))) {
+                    pendingAudioUrl = intent.getStringExtra(Constants.AUDIO_URL_EXTRA);
+                }
+            } else {
+                audioUrl = intent.getStringExtra(Constants.AUDIO_URL_EXTRA);
+                init();
+            }
+        } else if (action.equals(Constants.STOP_SERVICE_ACTION)) {
+            if (state == MediaPlayerState.PREPARING){
+                shouldStartAfterPrepare = false;
+                BusManager.getInstance().getBus().post(new UpdatePlayerEvent(false, false));
+            } else {
+                stop();
+            }
+        }
+
+        return START_NOT_STICKY;
+    }
+
+    private synchronized void init() {
+
+        shouldStartAfterPrepare = true;
+
+        try {
+            BusManager.getInstance().getBus().post(new UpdatePlayerEvent(false, true));
+            if (state != MediaPlayerState.IDLE){
+                mMediaPlayer.stop();
+                mMediaPlayer.reset();
+                state = MediaPlayerState.IDLE;
+            }
+            mMediaPlayer.setDataSource(this, Uri.parse(audioUrl)); // Go to Initialized state
+            state = MediaPlayerState.INITIALIZED;
+            mMediaPlayer.prepareAsync(); // prepare async to not block main thread
+            state = MediaPlayerState.PREPARING;
         } catch (IOException e) {
             resetPlayer();
         }
@@ -177,6 +199,12 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     }
 
     private synchronized void stop() {
+
+        if (state == MediaPlayerState.PREPARING){
+            shouldStartAfterPrepare = false;
+            return;
+        }
+
         if (mMediaPlayer.isPlaying()) {
             mMediaPlayer.stop();
         }
@@ -205,6 +233,18 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     public void onPrepared(MediaPlayer mp) {
 
         state = MediaPlayerState.PREPARED;
+
+        if (!shouldStartAfterPrepare){
+            stop();
+            return;
+        }
+
+        if (pendingAudioUrl != null){
+            audioUrl = pendingAudioUrl;
+            pendingAudioUrl = null;
+            init();
+            return;
+        }
 
         int result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC,
                 AudioManager.AUDIOFOCUS_GAIN);

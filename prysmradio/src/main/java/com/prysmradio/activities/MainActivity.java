@@ -142,6 +142,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             ((PrysmApplication) getApplicationContext()).setServiceIsRunning(true);
             setProgressBarIndeterminateVisibility(false);
         } else {
+            setProgressBarIndeterminateVisibility(false);
             ((PrysmApplication) getApplicationContext()).setServiceIsRunning(false);
             playPauseImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_play));
             artistTextView.setText("");
