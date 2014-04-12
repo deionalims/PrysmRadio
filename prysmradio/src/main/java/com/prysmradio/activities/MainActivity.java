@@ -18,11 +18,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
 import com.prysmradio.adapters.MainPagerAdapter;
 import com.prysmradio.bus.events.BusManager;
 import com.prysmradio.bus.events.MediaPlayerErrorEvent;
+import com.prysmradio.bus.events.UpdateCoverEvent;
 import com.prysmradio.bus.events.UpdateMetaDataEvent;
 import com.prysmradio.bus.events.UpdatePlayerEvent;
 import com.prysmradio.bus.events.UpdatePodcastTitleEvent;
@@ -39,10 +43,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     @InjectView(R.id.pager) ViewPager mainViewPager;
     @InjectView(R.id.play_pause_button) ImageView playPauseImageView;
+    @InjectView(R.id.thumbnail_cover_imageView) ImageView thumbnailCoverImageView;
     @InjectView(R.id.mute_button) ImageView muteImageView;
-    @InjectView(R.id.artist_textView)
-    TextView artistTextView;
-    @InjectView(R.id.title_textView) TextView titleTextView;
+    @InjectView(R.id.stream_title_textView) TextView streamTitleTextView;
+    @InjectView(R.id.episode_title_textView) TextView episodeTitleTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,10 +128,12 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @OnClick(R.id.play_pause_button)
     public void playPauseOnClick(View v){
         if (!((PrysmApplication) getApplicationContext()).isServiceIsRunning()){
+            ((PrysmApplication) getApplicationContext()).setServiceIsRunning(true);
             Intent intent = new Intent(Constants.START_SERVICE_ACTION);
             intent.putExtra(Constants.AUDIO_URL_EXTRA, getString(R.string.radio_url));
             startService(new Intent(intent));
         } else {
+            ((PrysmApplication) getApplicationContext()).setServiceIsRunning(false);
             startService(new Intent(Constants.STOP_SERVICE_ACTION));
         }
     }
@@ -145,34 +151,43 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             setProgressBarIndeterminateVisibility(false);
             ((PrysmApplication) getApplicationContext()).setServiceIsRunning(false);
             playPauseImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_play));
-            artistTextView.setText("");
-            titleTextView.setText("");
+            streamTitleTextView.setText("");
+            BusManager.getInstance().getBus().post(new UpdateCoverEvent(null));
         }
     }
 
     @Subscribe
     public void onUpdateMetaDataEventReceived(UpdateMetaDataEvent event){
-        if (!TextUtils.isEmpty(event.getArtist())){
-            artistTextView.setText(String.format(getString(R.string.artist), event.getArtist()));
-        }
-        if (!TextUtils.isEmpty(event.getTitle())){
-            titleTextView.setText(String.format(getString(R.string.title), event.getTitle()));
+        if (!TextUtils.isEmpty(event.getStreamTitle())){
+            episodeTitleTextView.setVisibility(View.GONE);
+            streamTitleTextView.setText(event.getStreamTitle());
         }
     }
 
     @Subscribe
     public void onUpdatePodcastTitleEventReceived(UpdatePodcastTitleEvent event){
         if (!TextUtils.isEmpty(event.getPodcastTitle())){
-            artistTextView.setText(event.getPodcastTitle());
+            streamTitleTextView.setText(event.getPodcastTitle());
         }
         if (!TextUtils.isEmpty(event.getEpisodeTitle())){
-            titleTextView.setText(event.getEpisodeTitle());
+            episodeTitleTextView.setVisibility(View.VISIBLE);
+            episodeTitleTextView.setText(event.getEpisodeTitle());
         }
     }
 
     @Subscribe
     public void onMediaPlayerErrorEventReceived(MediaPlayerErrorEvent event){
         Toast.makeText(this, event.getMessage(), Toast.LENGTH_LONG).show();
+    }
+
+    @Subscribe
+    public void onUpdateCoverEventReceived(UpdateCoverEvent event){
+        if (event.getCurrentTrackInfo() != null){
+            ImageLoader.getInstance().displayImage(event.getCurrentTrackInfo().getCover().getCover600x600(), thumbnailCoverImageView, new DisplayImageOptions.Builder().displayer(new FadeInBitmapDisplayer(300)).build());
+        } else {
+            thumbnailCoverImageView.setImageResource(R.drawable.prysm_logo);
+        }
+
     }
 
     private boolean isMyServiceRunning() {
