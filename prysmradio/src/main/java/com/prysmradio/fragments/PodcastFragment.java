@@ -15,10 +15,12 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.prysmradio.R;
+import com.prysmradio.activities.PlayerActivity;
 import com.prysmradio.adapters.EpisodeAdapter;
 import com.prysmradio.api.ApiManager;
 import com.prysmradio.api.requests.EpisodeRequest;
 import com.prysmradio.bus.events.BusManager;
+import com.prysmradio.bus.events.EpisodeEvent;
 import com.prysmradio.bus.events.PodcastEvent;
 import com.prysmradio.bus.events.RetroFitErrorEvent;
 import com.prysmradio.objects.Podcast;
@@ -59,7 +61,7 @@ public class PodcastFragment extends PrysmFragment implements AdapterView.OnItem
 
         ImageLoader.getInstance().displayImage(podcast.getInfos().getCover(), podcastImageView, new DisplayImageOptions.Builder().displayer(new FadeInBitmapDisplayer(300)).build());
         titleTextView.setText(podcast.getTitle());
-        subtitleTextView.setText(podcast.getInfos().getSummary());
+        subtitleTextView.setText(podcast.getInfos().getSubtitle());
 
         BusManager.getInstance().getBus().register(this);
         ApiManager.getInstance().invoke(getActivity(), new EpisodeRequest(podcast));
@@ -99,6 +101,14 @@ public class PodcastFragment extends PrysmFragment implements AdapterView.OnItem
         intent.putExtra(Constants.AUDIO_URL_EXTRA, episode.getAudioUrl());
 
         getActivity().startService(intent);
+
+        episode.setSummary(podcast.getInfos().getSummary()  );
+        Intent podcastIntent = new Intent(getActivity(), PlayerActivity.class);
+        podcastIntent.putExtra(Constants.EPISODE_EXTRA, episode);
+        podcastIntent.putExtra(Constants.LOADING_EXTRA, true);
+        getActivity().startActivity(podcastIntent);
+
+        BusManager.getInstance().getBus().post(new EpisodeEvent(episode));
     }
 
     public void setPodcast(Podcast podcast) {

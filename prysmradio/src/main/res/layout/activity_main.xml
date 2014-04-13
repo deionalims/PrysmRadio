@@ -15,14 +15,15 @@
         android:background="@android:color/darker_gray"/>
 
     <LinearLayout
+        android:id="@+id/player_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/thumbnail_cover_imageView"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:scaleType="centerInside"
             android:src="@drawable/prysm_logo"/>
 
@@ -38,12 +39,6 @@
                 android:id="@+id/stream_title_textView"
                 android:layout_width="match_parent"
                 android:gravity="center_vertical"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-
-            <TextView
-                android:id="@+id/episode_title_textView"
-                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"/>
 

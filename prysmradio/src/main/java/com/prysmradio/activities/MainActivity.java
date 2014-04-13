@@ -25,11 +25,13 @@ import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
 import com.prysmradio.adapters.MainPagerAdapter;
 import com.prysmradio.bus.events.BusManager;
+import com.prysmradio.bus.events.EpisodeEvent;
 import com.prysmradio.bus.events.MediaPlayerErrorEvent;
 import com.prysmradio.bus.events.UpdateCoverEvent;
 import com.prysmradio.bus.events.UpdateMetaDataEvent;
 import com.prysmradio.bus.events.UpdatePlayerEvent;
 import com.prysmradio.bus.events.UpdatePodcastTitleEvent;
+import com.prysmradio.objects.PodcastEpisode;
 import com.prysmradio.services.MediaPlayerService;
 import com.prysmradio.utils.Constants;
 import com.squareup.otto.Subscribe;
@@ -46,7 +48,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @InjectView(R.id.thumbnail_cover_imageView) ImageView thumbnailCoverImageView;
     @InjectView(R.id.mute_button) ImageView muteImageView;
     @InjectView(R.id.stream_title_textView) TextView streamTitleTextView;
-    @InjectView(R.id.episode_title_textView) TextView episodeTitleTextView;
+
+    private PodcastEpisode currentEpisode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     protected void onResume() {
         super.onResume();
         BusManager.getInstance().getBus().register(this);
+        playPauseImageView.setImageDrawable(
+                ((PrysmApplication) getApplicationContext()).isServiceIsRunning() ?
+                        getResources().getDrawable(R.drawable.ic_action_stop) :
+                        getResources().getDrawable(R.drawable.ic_action_play));
     }
 
     @Override
@@ -132,6 +139,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             Intent intent = new Intent(Constants.START_SERVICE_ACTION);
             intent.putExtra(Constants.AUDIO_URL_EXTRA, getString(R.string.radio_url));
             startService(new Intent(intent));
+            currentEpisode = null;
         } else {
             ((PrysmApplication) getApplicationContext()).setServiceIsRunning(false);
             startService(new Intent(Constants.STOP_SERVICE_ACTION));
@@ -159,7 +167,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @Subscribe
     public void onUpdateMetaDataEventReceived(UpdateMetaDataEvent event){
         if (!TextUtils.isEmpty(event.getStreamTitle())){
-            episodeTitleTextView.setVisibility(View.GONE);
             streamTitleTextView.setText(event.getStreamTitle());
         }
     }
@@ -168,10 +175,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     public void onUpdatePodcastTitleEventReceived(UpdatePodcastTitleEvent event){
         if (!TextUtils.isEmpty(event.getPodcastTitle())){
             streamTitleTextView.setText(event.getPodcastTitle());
-        }
-        if (!TextUtils.isEmpty(event.getEpisodeTitle())){
-            episodeTitleTextView.setVisibility(View.VISIBLE);
-            episodeTitleTextView.setText(event.getEpisodeTitle());
         }
     }
 
@@ -183,11 +186,24 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @Subscribe
     public void onUpdateCoverEventReceived(UpdateCoverEvent event){
         if (event.getCurrentTrackInfo() != null){
-            ImageLoader.getInstance().displayImage(event.getCurrentTrackInfo().getCover().getCover600x600(), thumbnailCoverImageView, new DisplayImageOptions.Builder().displayer(new FadeInBitmapDisplayer(300)).build());
+            ImageLoader.getInstance().displayImage(event.getCurrentTrackInfo().getCover().getCover100x100(), thumbnailCoverImageView, new DisplayImageOptions.Builder().displayer(new FadeInBitmapDisplayer(300)).build());
         } else {
             thumbnailCoverImageView.setImageResource(R.drawable.prysm_logo);
         }
+    }
 
+    @Subscribe
+    public void onCurrentEpisodeReceived(EpisodeEvent event){
+        currentEpisode = event.getEpisode();
+    }
+
+    @OnClick(R.id.player_layout)
+    public void playerLayoutOnClick(View v){
+        if (((PrysmApplication) getApplicationContext()).isServiceIsRunning()) {
+            Intent podcastIntent = new Intent(this, PlayerActivity.class);
+            podcastIntent.putExtra(Constants.EPISODE_EXTRA, currentEpisode);
+            startActivity(podcastIntent);
+        }
     }
 
     private boolean isMyServiceRunning() {
