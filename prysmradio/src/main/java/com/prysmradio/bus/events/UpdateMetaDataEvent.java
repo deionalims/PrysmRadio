@@ -5,27 +5,18 @@ package com.prysmradio.bus.events;
  */
 public class UpdateMetaDataEvent {
 
-    private String artist;
-    private String title;
+    private String streamTitle;
 
-    public UpdateMetaDataEvent(String a, String t){
-        artist = a;
-        title = t;
+    public UpdateMetaDataEvent(String title){
+        streamTitle = title;
     }
 
-    public String getArtist() {
-        return artist;
+
+    public String getStreamTitle() {
+        return streamTitle;
     }
 
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setStreamTitle(String streamTitle) {
+        this.streamTitle = streamTitle;
     }
 }

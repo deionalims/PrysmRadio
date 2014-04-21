@@ -8,7 +8,7 @@
     <string name="tab_prysmradio">Prysm</string>
     <string name="tab_podcasts">Podcasts</string>
 
-    <string name="radio_url">http://streaming.streamonomy.com/prysmradio-mp3</string>
+    <string name="radio_url">http://streaming.streamonomy.com/prysmradio-aac</string>
     <string name="prysm_url">http://www.prysmradio.com/</string>
 
     <string name="title">Title: %s</string>

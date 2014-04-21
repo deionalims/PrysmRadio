@@ -24,12 +24,16 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activities.PlayerActivity"
+            android:screenOrientation="portrait"/>
+
         <service android:name=".services.MediaPlayerService"
             android:exported="false">
 
             <intent-filter>
                 <action android:name="com.prysmradio.service_start"/>
                 <action android:name="com.prysmradio.service_stop"/>
+                <action android:name="com.prysmradio.service_seek"/>
             </intent-filter>
 
         </service>

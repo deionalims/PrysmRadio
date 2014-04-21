@@ -10,6 +10,11 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    sourceSets.main {
+        jniLibs.srcDir 'libs'
+    }
+
     buildTypes {
 
         debug {
@@ -34,4 +39,5 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.5.0'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.1'
     compile 'de.keyboardsurfer.android.widget:crouton:1.8.+'
+    compile files('libs/aacdecoder-android-0.8.jar')
 }

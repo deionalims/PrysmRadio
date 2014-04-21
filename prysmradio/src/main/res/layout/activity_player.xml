@@ -4,30 +4,19 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <include
+        android:id="@+id/podcast_infos_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        layout="@layout/include_podcast_infos"/>
 
-    <LinearLayout
+    <include
+        android:id="@+id/radio_infos_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10dp">
-
-        <SeekBar
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="10dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="00:00"
-            android:layout_gravity="center"/>
-
-        </LinearLayout>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        layout="@layout/include_radio_infos"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,23 +37,20 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/artist_textView"
+                android:id="@+id/player_title_textView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/title_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:gravity="center_vertical"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/play_pause_button"
+            android:id="@+id/player_play_pause_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="5dp"
-            android:src="@drawable/ic_action_play" />
+            android:src="@drawable/ic_action_stop" />
 
         <ImageView
             android:id="@+id/mute_button"
