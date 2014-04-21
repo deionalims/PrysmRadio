@@ -7,9 +7,12 @@ public class Constants {
     public static final int NOTIFICATION_ID = 0xC0DE;
 
     // Media Service Actions
-    public static final String START_SERVICE_ACTION = "com.prysmradio.service_start";
-    public static final String STOP_SERVICE_ACTION = "com.prysmradio.service_stop";
-    public static final String SEEK_SERVICE_ACTION = "com.prysmradio.service_seek";
+    public static final String START_RADIO_SERVICE_ACTION = "com.prysmradio.radio.service_start";
+    public static final String STOP_RADIO_SERVICE_ACTION = "com.prysmradio.radio.service_stop";
+
+    public static final String START_PODCAST_SERVICE_ACTION = "com.prysmradio.podcast.service_start";
+    public static final String STOP_PODCAST_SERVICE_ACTION = "com.prysmradio.podcast.service_stop";
+    public static final String SEEK_PODCAST_SERVICE_ACTION = "com.prysmradio.podcast.service_seek";
 
 
     // EXTRAS

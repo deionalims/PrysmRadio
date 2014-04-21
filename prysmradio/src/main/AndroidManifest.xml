@@ -27,16 +27,24 @@
         <activity android:name=".activities.PlayerActivity"
             android:screenOrientation="portrait"/>
 
-        <service android:name=".services.MediaPlayerService"
+        <service android:name=".services.RadioPlayerService"
             android:exported="false">
 
             <intent-filter>
-                <action android:name="com.prysmradio.service_start"/>
-                <action android:name="com.prysmradio.service_stop"/>
-                <action android:name="com.prysmradio.service_seek"/>
+                <action android:name="com.prysmradio.radio.service_start"/>
+                <action android:name="com.prysmradio.radio.service_stop"/>
             </intent-filter>
 
         </service>
+
+        <service android:name=".services.PodcastPlayerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.prysmradio.podcast.service_start"/>
+                <action android:name="com.prysmradio.podcast.service_stop"/>
+                <action android:name="com.prysmradio.podcast.service_seek"/>
+            </intent-filter>
+            </service>
 
     </application>
 

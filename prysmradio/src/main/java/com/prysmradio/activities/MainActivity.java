@@ -32,7 +32,7 @@ import com.prysmradio.bus.events.UpdateMetaDataEvent;
 import com.prysmradio.bus.events.UpdatePlayerEvent;
 import com.prysmradio.bus.events.UpdatePodcastTitleEvent;
 import com.prysmradio.objects.PodcastEpisode;
-import com.prysmradio.services.MediaPlayerService;
+import com.prysmradio.services.RadioPlayerService;
 import com.prysmradio.utils.Constants;
 import com.squareup.otto.Subscribe;
 
@@ -136,13 +136,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     public void playPauseOnClick(View v){
         if (!((PrysmApplication) getApplicationContext()).isServiceIsRunning()){
             ((PrysmApplication) getApplicationContext()).setServiceIsRunning(true);
-            Intent intent = new Intent(Constants.START_SERVICE_ACTION);
+            Intent intent = new Intent(Constants.START_RADIO_SERVICE_ACTION);
             intent.putExtra(Constants.AUDIO_URL_EXTRA, getString(R.string.radio_url));
             startService(new Intent(intent));
             currentEpisode = null;
         } else {
             ((PrysmApplication) getApplicationContext()).setServiceIsRunning(false);
-            startService(new Intent(Constants.STOP_SERVICE_ACTION));
+            startService(new Intent(Constants.STOP_RADIO_SERVICE_ACTION));
         }
     }
 
@@ -155,6 +155,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         } else if (event.isPlaying()){
             ((PrysmApplication) getApplicationContext()).setServiceIsRunning(true);
             setProgressBarIndeterminateVisibility(false);
+            playPauseImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_stop));
         } else {
             setProgressBarIndeterminateVisibility(false);
             ((PrysmApplication) getApplicationContext()).setServiceIsRunning(false);
@@ -209,7 +210,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     private boolean isMyServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (MediaPlayerService.class.getName().equals(service.service.getClassName())) {
+            if (RadioPlayerService.class.getName().equals(service.service.getClassName())) {
                 return true;
             }
         }

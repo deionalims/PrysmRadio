@@ -177,19 +177,19 @@ public class PlayerActivity extends ActionBarActivity implements SeekBar.OnSeekB
     public void playPauseOnClick(View v){
         if (!((PrysmApplication) getApplicationContext()).isServiceIsRunning()){
             ((PrysmApplication) getApplicationContext()).setServiceIsRunning(true);
-            Intent intent = new Intent(Constants.START_SERVICE_ACTION);
+            Intent intent = new Intent(Constants.START_PODCAST_SERVICE_ACTION);
             intent.putExtra(Constants.AUDIO_URL_EXTRA, episode.getAudioUrl());
             startService(new Intent(intent));
         } else {
             ((PrysmApplication) getApplicationContext()).setServiceIsRunning(false);
-            startService(new Intent(Constants.STOP_SERVICE_ACTION));
+            startService(new Intent(Constants.STOP_PODCAST_SERVICE_ACTION));
         }
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (fromUser){
-            Intent intent = new Intent(Constants.SEEK_SERVICE_ACTION);
+            Intent intent = new Intent(Constants.SEEK_PODCAST_SERVICE_ACTION);
             intent.putExtra(Constants.SEEK_TO_EXTRA, progress);
             startService(new Intent(intent));
         }

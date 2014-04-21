@@ -95,7 +95,7 @@ public class PodcastFragment extends PrysmFragment implements AdapterView.OnItem
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         PodcastEpisode episode = podcast.getEpisodes().get(i);
 
-        Intent intent = new Intent(Constants.START_SERVICE_ACTION);
+        Intent intent = new Intent(Constants.START_PODCAST_SERVICE_ACTION);
         intent.putExtra(Constants.PODCAST_TITLE_EXTRA, episode.getTitle());
         intent.putExtra(Constants.EPISODE_TITLE_EXTRA, episode.getSubtitle());
         intent.putExtra(Constants.AUDIO_URL_EXTRA, episode.getAudioUrl());
