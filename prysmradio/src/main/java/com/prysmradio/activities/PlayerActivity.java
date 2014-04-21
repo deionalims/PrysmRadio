@@ -118,6 +118,7 @@ public class PlayerActivity extends ActionBarActivity implements SeekBar.OnSeekB
                             TimeUnit.MILLISECONDS.toSeconds(event.getDuration()) -
                                     TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(event.getDuration()))));
             seekBar.setMax(event.getDuration());
+            playPauseImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_stop));
         } else {
             setProgressBarIndeterminateVisibility(false);
             ((PrysmApplication) getApplicationContext()).setServiceIsRunning(false);

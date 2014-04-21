@@ -1,13 +1,18 @@
 package com.prysmradio.services;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
+import android.net.ConnectivityManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.prysmradio.PrysmApplication;
 import com.prysmradio.bus.events.BusManager;
@@ -38,6 +43,12 @@ public abstract class PrysmAudioService extends Service implements AudioManager.
 
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         runOnUiThreadHandler = new Handler();
+
+        registerReceiver(
+        new ConnectivityChangeReceiver(),
+        new IntentFilter(
+                ConnectivityManager.CONNECTIVITY_ACTION));
+
 
         BusManager.getInstance().getBus().register(this);
     }
@@ -141,4 +152,29 @@ public abstract class PrysmAudioService extends Service implements AudioManager.
             super.onCallStateChanged(state, incomingNumber);
         }
     };
+
+    private class ConnectivityChangeReceiver
+            extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            debugIntent(intent, "MICHEL");
+        }
+
+        private void debugIntent(Intent intent, String tag) {
+            Log.v(tag, "action: " + intent.getAction());
+            Log.v(tag, "component: " + intent.getComponent());
+            Bundle extras = intent.getExtras();
+            if (extras != null) {
+                for (String key: extras.keySet()) {
+                    Log.v(tag, "key [" + key + "]: " +
+                            extras.get(key));
+                }
+            }
+            else {
+                Log.v(tag, "no extras");
+            }
+        }
+
+    }
 }

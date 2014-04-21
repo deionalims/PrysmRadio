@@ -114,6 +114,8 @@ public class RadioPlayerService extends PrysmAudioService implements PlayerCallb
     public void playerStopped(int i){
         if (state == STATE.SHOULD_LOAD_URL){
             start();
+        } else if (state == STATE.PLAYING){
+            player.playAsync(audioUrl);
         } else {
             stop();
         }
@@ -135,7 +137,6 @@ public class RadioPlayerService extends PrysmAudioService implements PlayerCallb
                     ApiManager.getInstance().invoke(null, new CurrentTrackInfoRequest());
                 }
             });
-
         }
     }
 
