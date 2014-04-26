@@ -44,14 +44,14 @@ public class PlayerActivity extends ActionBarActivity implements SeekBar.OnSeekB
 
     private PodcastEpisode episode;
 
-    @InjectView(R.id.player_play_pause_button)
+    @InjectView(R.id.play_pause_button)
     ImageView playPauseImageView;
     @InjectView(R.id.current_position_time)
     TextView currentTimeTextView;
     @InjectView(R.id.total_time) TextView totalTimeTextView;
     @InjectView(R.id.seekBar)
     SeekBar seekBar;
-    @InjectView(R.id.player_title_textView) TextView playerTitleTextView;
+    @InjectView(R.id.stream_title_textView) TextView playerTitleTextView;
     @InjectView(R.id.summary_textView) TextView summaryTextView;
     @InjectView(R.id.player_imageView) ImageView playerImageView;
     @InjectView(R.id.radio_infos_layout)
@@ -174,7 +174,7 @@ public class PlayerActivity extends ActionBarActivity implements SeekBar.OnSeekB
         }
     }
 
-    @OnClick(R.id.player_play_pause_button)
+    @OnClick(R.id.play_pause_button)
     public void playPauseOnClick(View v){
         if (!((PrysmApplication) getApplicationContext()).isServiceIsRunning()){
             ((PrysmApplication) getApplicationContext()).setServiceIsRunning(true);

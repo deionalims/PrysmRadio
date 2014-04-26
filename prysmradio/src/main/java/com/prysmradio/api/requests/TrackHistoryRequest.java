@@ -17,6 +17,8 @@ import retrofit.RetrofitError;
  */
 public class TrackHistoryRequest extends PrysmRequest<List<CurrentTrackInfo>> {
 
+    private static final int LAST_PLAYED_LIMIT = 3;
+
     public TrackHistoryRequest() {
         super(new PrysmCallback<List<CurrentTrackInfo>>() {
             @Override
@@ -34,7 +36,7 @@ public class TrackHistoryRequest extends PrysmRequest<List<CurrentTrackInfo>> {
 
     @Override
     public List<CurrentTrackInfo> execute(PrysmApi prysmApi) {
-        return prysmApi.getTrackHistory(4);
+        return prysmApi.getTrackHistory(LAST_PLAYED_LIMIT);
     }
 
 }

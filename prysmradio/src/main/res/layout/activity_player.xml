@@ -18,47 +18,7 @@
         android:layout_weight="1"
         layout="@layout/include_radio_infos"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/prysm_logo"/>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/player_title_textView"
-                android:layout_width="match_parent"
-                android:gravity="center_vertical"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/player_play_pause_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/ic_action_stop" />
-
-        <ImageView
-            android:id="@+id/mute_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/ic_action_volume_muted"
-            android:layout_gravity="center_vertical"/>
-    </LinearLayout>
+    <include
+        layout="@layout/include_bottom_player" />
 
 </LinearLayout>

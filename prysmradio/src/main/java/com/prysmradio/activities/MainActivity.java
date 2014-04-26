@@ -18,9 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
 import com.prysmradio.adapters.MainPagerAdapter;
@@ -45,8 +42,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     @InjectView(R.id.pager) ViewPager mainViewPager;
     @InjectView(R.id.play_pause_button) ImageView playPauseImageView;
-    @InjectView(R.id.thumbnail_cover_imageView) ImageView thumbnailCoverImageView;
-    @InjectView(R.id.mute_button) ImageView muteImageView;
     @InjectView(R.id.stream_title_textView) TextView streamTitleTextView;
 
     private PodcastEpisode currentEpisode;
@@ -184,16 +179,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         Toast.makeText(this, event.getMessage(), Toast.LENGTH_LONG).show();
     }
 
-    @Subscribe
-    public void onUpdateCoverEventReceived(UpdateCoverEvent event){
-        if (event.getCurrentTrackInfo() != null){
-            ImageLoader.getInstance().displayImage(event.getCurrentTrackInfo().getCover().getCover100x100(), thumbnailCoverImageView, new DisplayImageOptions.Builder().displayer(new FadeInBitmapDisplayer(300)).build());
-        } else {
-            thumbnailCoverImageView.setImageResource(R.drawable.prysm_logo);
-        }
-    }
-
-    @Subscribe
+   @Subscribe
     public void onCurrentEpisodeReceived(EpisodeEvent event){
         currentEpisode = event.getEpisode();
     }
