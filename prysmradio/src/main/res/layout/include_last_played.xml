@@ -19,14 +19,15 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/tab_selected_color"
-            android:text="LAST PLAYED"
+            android:text="@string/last_played"
             android:textStyle="bold"
+            android:textSize="20sp"
             android:layout_marginRight="5dp"/>
 
         <ProgressBar
             style="?android:attr/progressBarStyleSmall"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/track_history_progressBar" />
     </LinearLayout>
 
@@ -50,6 +51,7 @@
             android:layout_marginTop="5dp"
             android:textColor="@android:color/white"
             android:textStyle="bold"
+            android:textSize="16sp"
             android:text="Last played 1"/>
 
         <TextView

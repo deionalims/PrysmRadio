@@ -11,9 +11,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.prysmradio.R;
 import com.prysmradio.activities.PlayerActivity;
 import com.prysmradio.adapters.EpisodeAdapter;
@@ -59,7 +57,7 @@ public class PodcastFragment extends PrysmFragment implements AdapterView.OnItem
 
         episodesListView.setOnItemClickListener(this);
 
-        ImageLoader.getInstance().displayImage(podcast.getInfos().getCover(), podcastImageView, new DisplayImageOptions.Builder().displayer(new FadeInBitmapDisplayer(300)).build());
+        ImageLoader.getInstance().displayImage(podcast.getInfos().getCover(), podcastImageView);
         titleTextView.setText(podcast.getTitle());
         subtitleTextView.setText(podcast.getInfos().getSubtitle());
 

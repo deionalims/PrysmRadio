@@ -4,9 +4,7 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.media.AudioManager;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -44,10 +42,10 @@ public abstract class PrysmAudioService extends Service implements AudioManager.
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         runOnUiThreadHandler = new Handler();
 
-        registerReceiver(
-        new ConnectivityChangeReceiver(),
-        new IntentFilter(
-                ConnectivityManager.CONNECTIVITY_ACTION));
+//        registerReceiver(
+//        new ConnectivityChangeReceiver(),
+//        new IntentFilter(
+//                ConnectivityManager.CONNECTIVITY_ACTION));
 
 
         BusManager.getInstance().getBus().register(this);

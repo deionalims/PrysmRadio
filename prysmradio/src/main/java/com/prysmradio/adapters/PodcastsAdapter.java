@@ -9,9 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.prysmradio.R;
 import com.prysmradio.objects.Podcast;
 
@@ -46,16 +44,19 @@ public class PodcastsAdapter extends BaseAdapter {
 
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.item_podcast, null);
-        // configure view holder
+
         TextView title = (TextView) rowView.findViewById(R.id.podcast_title_textView);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.podcast_imageView);
         TextView subTitle = (TextView) rowView.findViewById(R.id.podcast_subtitle_textView);
+        TextView episodes = (TextView) rowView.findViewById(R.id.podcast_episodes);
 
         Podcast p = podcasts.get(position);
 
         title.setText(p.getTitle());
         subTitle.setText(p.getInfos().getSubtitle());
-        ImageLoader.getInstance().displayImage(p.getInfos().getCover(), imageView, new DisplayImageOptions.Builder().displayer(new FadeInBitmapDisplayer(300)).build());
+        episodes.setText(String.format(context.getString(R.string.number_episodes), p.getEpisodeNum()));
+
+        ImageLoader.getInstance().displayImage(p.getInfos().getCover(), imageView);
 
         itemviews.put(position, rowView);
 

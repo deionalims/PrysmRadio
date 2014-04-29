@@ -8,9 +8,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.prysmradio.R;
 import com.prysmradio.api.ApiManager;
 import com.prysmradio.api.requests.TrackHistoryRequest;
@@ -74,11 +72,13 @@ public class RadioFragment extends PrysmFragment {
     @Subscribe
     public void onUpdateCoverEventReceived(UpdateCoverEvent event){
         if (event.getCurrentTrackInfo() != null){
-            ImageLoader.getInstance().displayImage(event.getCurrentTrackInfo().getCover().getCover600x600(), coverImageView, new DisplayImageOptions.Builder().displayer(new FadeInBitmapDisplayer(300)).build());
+            ImageLoader.getInstance().displayImage(event.getCurrentTrackInfo().getCover().getCover600x600(), coverImageView);
             nowPlayingArtistTextView.setText(event.getCurrentTrackInfo().getArtist());
             nowPlayingTitleTextView.setText(event.getCurrentTrackInfo().getTitle());
         } else {
             coverImageView.setImageResource(R.drawable.prysm_logo);
+            nowPlayingArtistTextView.setText("");
+            nowPlayingTitleTextView.setText("");
         }
         ApiManager.getInstance().invoke(null, new TrackHistoryRequest());
     }

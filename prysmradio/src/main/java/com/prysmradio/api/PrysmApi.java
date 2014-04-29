@@ -1,6 +1,7 @@
 package com.prysmradio.api;
 
 import com.prysmradio.objects.CurrentTrackInfo;
+import com.prysmradio.objects.News;
 import com.prysmradio.objects.Podcast;
 
 import java.util.List;
@@ -14,20 +15,24 @@ import retrofit.http.Query;
  */
 public interface PrysmApi {
 
-    static final String API = "/bomgmt/api";
+    //static final String API = "/bomgmt/api";
     static final String PODCAST = "/podcast";
     static final String CURRENT = "/current";
+    static final String NEWS = "/news";
     static final String LAST = "/last";
 
-    @GET(API + PODCAST)
+    @GET(PODCAST)
     List<Podcast> getPodcasts();
 
-    @GET(API + PODCAST + "/{id}")
+    @GET(PODCAST + "/{id}")
     Podcast getPodcast(@Path("id") int id);
 
-    @GET(API + CURRENT)
+    @GET(CURRENT)
     CurrentTrackInfo getCurrentTrackInfo();
 
-    @GET(API + LAST)
+    @GET(LAST)
     List<CurrentTrackInfo> getTrackHistory(@Query("limit") int limit);
+
+    @GET(NEWS)
+    List<News> getNews(@Query("limit") String limit);
 }

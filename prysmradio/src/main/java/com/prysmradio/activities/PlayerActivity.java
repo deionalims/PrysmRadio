@@ -13,9 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
 import com.prysmradio.api.ApiManager;
@@ -80,7 +78,7 @@ public class PlayerActivity extends ActionBarActivity implements SeekBar.OnSeekB
             radioLayout.setVisibility(View.GONE);
             playerTitleTextView.setText(episode.getTitle());
             summaryTextView.setText(episode.getSummary());
-            ImageLoader.getInstance().displayImage(episode.getCover(), playerImageView, new DisplayImageOptions.Builder().displayer(new FadeInBitmapDisplayer(300)).build());
+            ImageLoader.getInstance().displayImage(episode.getCover(), playerImageView);
         } else {
             podcastLayout.setVisibility(View.GONE);
             radioLayout.setVisibility(View.VISIBLE);
@@ -142,7 +140,7 @@ public class PlayerActivity extends ActionBarActivity implements SeekBar.OnSeekB
     public void onUpdateCoverEventReceived(UpdateCoverEvent event){
         coverProgressBar.setVisibility(View.GONE);
         if (event.getCurrentTrackInfo() != null){
-            ImageLoader.getInstance().displayImage(event.getCurrentTrackInfo().getCover().getCover600x600(), nowPlayingImageView, new DisplayImageOptions.Builder().displayer(new FadeInBitmapDisplayer(300)).build());
+            ImageLoader.getInstance().displayImage(event.getCurrentTrackInfo().getCover().getCover600x600(), nowPlayingImageView);
             nowPlayingTextView.setText(event.getCurrentTrackInfo().getTitle() + " - " + event.getCurrentTrackInfo().getArtist());
         } else {
             nowPlayingImageView.setImageResource(R.drawable.prysm_logo);
