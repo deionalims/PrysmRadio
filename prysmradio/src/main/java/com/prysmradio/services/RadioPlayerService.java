@@ -7,8 +7,6 @@ import android.util.Log;
 
 import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
-import com.prysmradio.api.ApiManager;
-import com.prysmradio.api.requests.CurrentTrackInfoRequest;
 import com.prysmradio.bus.events.BusManager;
 import com.prysmradio.bus.events.UpdateMetaDataEvent;
 import com.prysmradio.bus.events.UpdatePlayerEvent;
@@ -134,7 +132,7 @@ public class RadioPlayerService extends PrysmAudioService implements PlayerCallb
                 public void run() {
                     UpdateMetaDataEvent event = new UpdateMetaDataEvent(s2);
                     BusManager.getInstance().getBus().post(event);
-                    ApiManager.getInstance().invoke(null, new CurrentTrackInfoRequest());
+                    //ApiManager.getInstance().invoke(null, new CurrentTrackInfoRequest());
                 }
             });
         }

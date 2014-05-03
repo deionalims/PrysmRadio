@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/podcast_infos_layout"
+    <FrameLayout
+        android:id="@+id/player_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        layout="@layout/include_podcast_infos"/>
+        android:layout_weight="1"/>
 
-    <include
-        android:id="@+id/radio_infos_layout"
+    <fragment
+        android:id="@+id/fragment_bottom_player"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        layout="@layout/include_radio_infos"/>
-
-    <include
-        layout="@layout/include_bottom_player" />
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_bottom_player"
+        android:name="com.prysmradio.fragments.BottomPlayerFragment"/>
 
 </LinearLayout>

@@ -10,7 +10,7 @@
     android:background="@color/item_background">
 
     <ImageView
-        android:id="@+id/podcast_imageView"
+        android:id="@+id/radio_imageView"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:src="@drawable/prysm_logo_square"
@@ -27,7 +27,7 @@
         android:layout_gravity="center">
 
         <TextView
-            android:id="@+id/podcast_title_textView"
+            android:id="@+id/radio_title_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -36,17 +36,12 @@
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/podcast_subtitle_textView"
+            android:id="@+id/radio_subtitle_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="La culture techno"
             android:textColor="@android:color/white"/>
 
-        <TextView
-            android:id="@+id/podcast_episodes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/tab_selected_color"/>
 
     </LinearLayout>
 

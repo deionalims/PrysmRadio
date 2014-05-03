@@ -1,6 +1,7 @@
 package com.prysmradio.objects;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by fxoxe_000 on 29/04/2014.
@@ -52,4 +53,7 @@ public class News implements Serializable {
     public void setThumb(String thumb) {
         this.thumb = thumb;
     }
+
+    @SuppressWarnings("serial")
+    public static class List extends ArrayList<News>{}
 }

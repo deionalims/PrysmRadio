@@ -1,35 +1,24 @@
 package com.prysmradio.activities;
 
-import android.app.ActivityManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
 import com.prysmradio.adapters.MainPagerAdapter;
-import com.prysmradio.bus.events.BusManager;
 import com.prysmradio.bus.events.EpisodeEvent;
 import com.prysmradio.bus.events.MediaPlayerErrorEvent;
-import com.prysmradio.bus.events.UpdateCoverEvent;
-import com.prysmradio.bus.events.UpdateMetaDataEvent;
-import com.prysmradio.bus.events.UpdatePlayerEvent;
-import com.prysmradio.bus.events.UpdatePodcastTitleEvent;
+import com.prysmradio.fragments.BottomPlayerFragment;
 import com.prysmradio.objects.PodcastEpisode;
-import com.prysmradio.services.RadioPlayerService;
 import com.prysmradio.utils.Constants;
 import com.squareup.otto.Subscribe;
 
@@ -38,11 +27,9 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 
-public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
+public class MainActivity extends PrysmActivity implements ActionBar.TabListener {
 
     @InjectView(R.id.pager) ViewPager mainViewPager;
-    @InjectView(R.id.play_pause_button) ImageView playPauseImageView;
-    @InjectView(R.id.stream_title_textView) TextView streamTitleTextView;
 
     private PodcastEpisode currentEpisode;
 
@@ -58,6 +45,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
         mainViewPager.setAdapter(adapter);
 
+        bottomPlayerFragment = (BottomPlayerFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_bottom_player);
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.addTab(actionBar.newTab().setText(getString(R.string.tab_radio)).setTabListener(this));
@@ -71,27 +60,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             }
         });
 
-        playPauseImageView.setImageDrawable(
-                ((PrysmApplication) getApplicationContext()).isServiceIsRunning() ?
-                        getResources().getDrawable(R.drawable.ic_action_stop) :
-                        getResources().getDrawable(R.drawable.ic_action_play));
+
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        BusManager.getInstance().getBus().register(this);
-        playPauseImageView.setImageDrawable(
-                ((PrysmApplication) getApplicationContext()).isServiceIsRunning() ?
-                        getResources().getDrawable(R.drawable.ic_action_stop) :
-                        getResources().getDrawable(R.drawable.ic_action_play));
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        BusManager.getInstance().getBus().unregister(this);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -127,8 +99,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         // probably ignore this event
     }
 
-    @OnClick(R.id.play_pause_button)
-    public void playPauseOnClick(View v){
+    @Override
+    public void startStopAudioService() {
         if (!((PrysmApplication) getApplicationContext()).isServiceIsRunning()){
             ((PrysmApplication) getApplicationContext()).setServiceIsRunning(true);
             Intent intent = new Intent(Constants.START_RADIO_SERVICE_ACTION);
@@ -141,38 +113,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         }
     }
 
-    @Subscribe
-    public void onUpdatePlayerEventReceived(UpdatePlayerEvent event){
-        if (event.isBuffering()){
-            ((PrysmApplication) getApplicationContext()).setServiceIsRunning(true);
-            setProgressBarIndeterminateVisibility(true);
-            playPauseImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_stop));
-        } else if (event.isPlaying()){
-            ((PrysmApplication) getApplicationContext()).setServiceIsRunning(true);
-            setProgressBarIndeterminateVisibility(false);
-            playPauseImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_stop));
-        } else {
-            setProgressBarIndeterminateVisibility(false);
-            ((PrysmApplication) getApplicationContext()).setServiceIsRunning(false);
-            playPauseImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_play));
-            streamTitleTextView.setText("");
-            BusManager.getInstance().getBus().post(new UpdateCoverEvent(null));
-        }
-    }
 
-    @Subscribe
-    public void onUpdateMetaDataEventReceived(UpdateMetaDataEvent event){
-        if (!TextUtils.isEmpty(event.getStreamTitle())){
-            streamTitleTextView.setText(event.getStreamTitle());
-        }
-    }
-
-    @Subscribe
-    public void onUpdatePodcastTitleEventReceived(UpdatePodcastTitleEvent event){
-        if (!TextUtils.isEmpty(event.getPodcastTitle())){
-            streamTitleTextView.setText(event.getPodcastTitle());
-        }
-    }
 
     @Subscribe
     public void onMediaPlayerErrorEventReceived(MediaPlayerErrorEvent event){
@@ -189,17 +130,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         if (((PrysmApplication) getApplicationContext()).isServiceIsRunning()) {
             Intent podcastIntent = new Intent(this, PlayerActivity.class);
             podcastIntent.putExtra(Constants.EPISODE_EXTRA, currentEpisode);
+            podcastIntent.putExtra(Constants.STREAM_TITLE_EXTRA, bottomPlayerFragment.getStreamTitle());
             startActivity(podcastIntent);
         }
-    }
-
-    private boolean isMyServiceRunning() {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (RadioPlayerService.class.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
     }
 }

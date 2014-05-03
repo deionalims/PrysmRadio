@@ -22,4 +22,5 @@ public class Constants {
     public static final String EPISODE_EXTRA = "episode_extra";
     public static final String LOADING_EXTRA = "loading_extra";
     public static final String SEEK_TO_EXTRA = "seek_to_extra";
+    public static final String STREAM_TITLE_EXTRA = "stream_title_extra";
 }

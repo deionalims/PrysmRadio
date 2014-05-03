@@ -1,6 +1,7 @@
 package com.prysmradio.objects;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by fxoxe_000 on 12/04/2014.
@@ -52,4 +53,7 @@ public class CurrentTrackInfo implements Serializable {
     public void setCover(TrackCovers cover) {
         this.cover = cover;
     }
+
+    @SuppressWarnings("serial")
+    public static class List extends ArrayList<CurrentTrackInfo> {}
 }

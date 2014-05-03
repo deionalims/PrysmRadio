@@ -1,6 +1,7 @@
 package com.prysmradio.fragments;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +10,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.octo.android.robospice.SpiceManager;
+import com.octo.android.robospice.persistence.DurationInMillis;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 import com.prysmradio.R;
-import com.prysmradio.api.ApiManager;
+import com.prysmradio.api.requests.CurrentTrackInfoRequest;
 import com.prysmradio.api.requests.TrackHistoryRequest;
 import com.prysmradio.bus.events.BusManager;
-import com.prysmradio.bus.events.TrackHistoryEvent;
-import com.prysmradio.bus.events.UpdateCoverEvent;
+import com.prysmradio.bus.events.UpdateMetaDataEvent;
+import com.prysmradio.objects.CurrentTrackInfo;
 import com.squareup.otto.Subscribe;
 
 import butterknife.ButterKnife;
@@ -43,43 +48,81 @@ public class RadioFragment extends PrysmFragment {
 
         ButterKnife.inject(this, v);
 
-        BusManager.getInstance().getBus().register(this);
-
-        ApiManager.getInstance().invoke(null, new TrackHistoryRequest());
-
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusManager.getInstance().getBus().register(this);
+        TrackHistoryRequest request = new TrackHistoryRequest(1);
+        getSpiceManager().execute(request, TrackHistoryRequest.TRACK_HISTORY_REQUEST, DurationInMillis.ONE_MINUTE, new TrackHistoryListener());
+
+        CurrentTrackInfoRequest currentTrackInfoRequest = new CurrentTrackInfoRequest(1);
+        getSpiceManager().execute(currentTrackInfoRequest, CurrentTrackInfoRequest.CURRENT_TRACK_REQUEST, DurationInMillis.ONE_MINUTE, new CurrentTrackListener());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusManager.getInstance().getBus().unregister(this);
+    }
+
     @Subscribe
-    public void onTrackHistoryEventReceived(TrackHistoryEvent event){
-        trackHistoryProgressBar.setVisibility(View.GONE);
-        if (event.getTrackHistory() != null && event.getTrackHistory().size() > 0){
-
-            lastPlayedLayout.setVisibility(View.VISIBLE);
-
-            lastArtistPlayed1.setText(event.getTrackHistory().get(0).getArtist());
-            lastTitlePlayed1.setText(event.getTrackHistory().get(0).getTitle());
-
-            lastArtistPlayed2.setText(event.getTrackHistory().get(1).getArtist());
-            lastTitlePlayed2.setText(event.getTrackHistory().get(1).getTitle());
-
-            lastArtistPlayed3.setText(event.getTrackHistory().get(2).getArtist());
-            lastTitlePlayed3.setText(event.getTrackHistory().get(2).getTitle());
+    public void onUpdateMetaDataEventReceived(UpdateMetaDataEvent event){
+        if (!TextUtils.isEmpty(event.getStreamTitle())){
+            CurrentTrackInfoRequest request = new CurrentTrackInfoRequest(1);
+            SpiceManager manager = getSpiceManager();
+            if (manager != null){
+                manager.execute(request, CurrentTrackInfoRequest.CURRENT_TRACK_REQUEST, DurationInMillis.ONE_MINUTE, new CurrentTrackListener());
+            }
         }
     }
 
-
-    @Subscribe
-    public void onUpdateCoverEventReceived(UpdateCoverEvent event){
-        if (event.getCurrentTrackInfo() != null){
-            ImageLoader.getInstance().displayImage(event.getCurrentTrackInfo().getCover().getCover600x600(), coverImageView);
-            nowPlayingArtistTextView.setText(event.getCurrentTrackInfo().getArtist());
-            nowPlayingTitleTextView.setText(event.getCurrentTrackInfo().getTitle());
-        } else {
-            coverImageView.setImageResource(R.drawable.prysm_logo);
-            nowPlayingArtistTextView.setText("");
-            nowPlayingTitleTextView.setText("");
+    private class TrackHistoryListener implements RequestListener<CurrentTrackInfo.List> {
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            showError(spiceException.getMessage());
         }
-        ApiManager.getInstance().invoke(null, new TrackHistoryRequest());
+
+        @Override
+        public void onRequestSuccess(CurrentTrackInfo.List currentTrackInfos) {
+            trackHistoryProgressBar.setVisibility(View.GONE);
+            if (currentTrackInfos != null && currentTrackInfos.size() > 0){
+
+                lastPlayedLayout.setVisibility(View.VISIBLE);
+
+                lastArtistPlayed1.setText(currentTrackInfos.get(0).getArtist());
+                lastTitlePlayed1.setText(currentTrackInfos.get(0).getTitle());
+
+                lastArtistPlayed2.setText(currentTrackInfos.get(1).getArtist());
+                lastTitlePlayed2.setText(currentTrackInfos.get(1).getTitle());
+
+                lastArtistPlayed3.setText(currentTrackInfos.get(2).getArtist());
+                lastTitlePlayed3.setText(currentTrackInfos.get(2).getTitle());
+            }
+        }
+    }
+
+    private class CurrentTrackListener implements RequestListener<CurrentTrackInfo> {
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            showError(spiceException.getMessage());
+        }
+
+        @Override
+        public void onRequestSuccess(CurrentTrackInfo currentTrackInfo) {
+            if (currentTrackInfo != null){
+                ImageLoader.getInstance().displayImage(currentTrackInfo.getCover().getCover600x600(), coverImageView);
+                nowPlayingArtistTextView.setText(currentTrackInfo.getArtist());
+                nowPlayingTitleTextView.setText(currentTrackInfo.getTitle());
+            } else {
+                coverImageView.setImageResource(R.drawable.prysm_logo);
+                nowPlayingArtistTextView.setText("");
+                nowPlayingTitleTextView.setText("");
+            }
+            TrackHistoryRequest request = new TrackHistoryRequest(1);
+            getSpiceManager().execute(request, TrackHistoryRequest.TRACK_HISTORY_REQUEST, DurationInMillis.ONE_MINUTE, new TrackHistoryListener());
+        }
     }
 }
