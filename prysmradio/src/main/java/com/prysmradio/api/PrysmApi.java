@@ -1,9 +1,9 @@
 package com.prysmradio.api;
 
 import com.prysmradio.objects.CurrentTrackInfo;
+import com.prysmradio.objects.News;
 import com.prysmradio.objects.Podcast;
-
-import java.util.List;
+import com.prysmradio.objects.Radio;
 
 import retrofit.http.GET;
 import retrofit.http.Path;
@@ -14,20 +14,32 @@ import retrofit.http.Query;
  */
 public interface PrysmApi {
 
-    static final String API = "/bomgmt/api";
+    //static final String API = "/bomgmt/api";
+    static final String RADIOS = "/radios";
+    static final String RADIO = "/radio";
     static final String PODCAST = "/podcast";
     static final String CURRENT = "/current";
+    static final String NEWS = "/news";
     static final String LAST = "/last";
 
-    @GET(API + PODCAST)
-    List<Podcast> getPodcasts();
+    @GET(RADIOS)
+    Radio.List getRadios();
 
-    @GET(API + PODCAST + "/{id}")
+    @GET(RADIO + "/{id}")
+    Radio getRadioDetails(@Path("id") int id);
+
+    @GET(CURRENT + "/{id}")
+    CurrentTrackInfo getCurrentTrackInfo(@Path("id") int id);
+
+    @GET(LAST + "/{id}")
+    CurrentTrackInfo.List getTrackHistory(@Path("id") int id, @Query("limit") int limit);
+
+    @GET(PODCAST)
+    Podcast.List getPodcasts();
+
+    @GET(PODCAST + "/{id}")
     Podcast getPodcast(@Path("id") int id);
 
-    @GET(API + CURRENT)
-    CurrentTrackInfo getCurrentTrackInfo();
-
-    @GET(API + LAST)
-    List<CurrentTrackInfo> getTrackHistory(@Query("limit") int limit);
+    @GET(NEWS)
+    News.List getNews(@Query("limit") String limit);
 }

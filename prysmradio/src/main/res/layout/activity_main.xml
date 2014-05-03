@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -9,57 +10,17 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
 
-    <LinearLayout
-        android:id="@+id/player_layout"
+
+    <fragment
+        android:id="@+id/fragment_bottom_player"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        tools:layout="@layout/fragment_bottom_player"
+        android:name="com.prysmradio.fragments.BottomPlayerFragment"/>
 
-        <ImageView
-            android:id="@+id/thumbnail_cover_imageView"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/prysm_logo"/>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="5dp"
-            android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/stream_title_textView"
-                android:layout_width="match_parent"
-                android:gravity="center_vertical"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/play_pause_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/ic_action_play" />
-
-        <ImageView
-            android:id="@+id/mute_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/ic_action_volume_muted"
-            android:layout_gravity="center_vertical"/>
-    </LinearLayout>
 
 </LinearLayout>
 

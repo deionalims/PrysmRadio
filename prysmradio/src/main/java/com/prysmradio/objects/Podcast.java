@@ -1,7 +1,7 @@
 package com.prysmradio.objects;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by fxoxe_000 on 23/03/2014.
@@ -13,7 +13,7 @@ public class Podcast implements Serializable {
     private String lang;
     private PodcastInfo infos;
     private int episodeNum;
-    private List<PodcastEpisode> episodes;
+    private ArrayList<PodcastEpisode> episodes;
 
     public String getTitle() {
         return title;
@@ -55,11 +55,14 @@ public class Podcast implements Serializable {
         this.episodeNum = episodeNum;
     }
 
-    public List<PodcastEpisode> getEpisodes() {
+    public ArrayList<PodcastEpisode> getEpisodes() {
         return episodes;
     }
 
-    public void setEpisodes(List<PodcastEpisode> episodes) {
+    public void setEpisodes(ArrayList<PodcastEpisode> episodes) {
         this.episodes = episodes;
     }
+
+    @SuppressWarnings("serial")
+    public static class List extends ArrayList<Podcast>{}
 }

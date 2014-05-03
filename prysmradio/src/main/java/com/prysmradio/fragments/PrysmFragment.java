@@ -1,26 +1,36 @@
 package com.prysmradio.fragments;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.prysmradio.R;
-import com.prysmradio.bus.events.RetroFitErrorEvent;
-import com.prysmradio.utils.CroutonHelper;
-import com.squareup.otto.Subscribe;
+import com.octo.android.robospice.SpiceManager;
+import com.prysmradio.activities.PrysmActivity;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 /**
  * Created by fxoxe_000 on 09/03/14.
  */
 public class PrysmFragment extends Fragment {
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_radio, container, false);
+    protected View rootView;
+
+    protected PrysmActivity getPrysmActivity(){
+        return (PrysmActivity) getActivity();
+    }
+
+    protected SpiceManager getSpiceManager(){
+        PrysmActivity activity = getPrysmActivity();
+        if (activity != null){
+            return activity.getSpiceManager();
+        }
+        return null;
     }
 
 
-
+    protected void showError(String error){
+        Crouton.showText(getPrysmActivity(), error, Style.ALERT, (ViewGroup)rootView);
+    }
 }

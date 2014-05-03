@@ -4,15 +4,21 @@
     <string name="app_name">PrysmRadio</string>
     <string name="action_settings">Settings</string>
 
-    <string name="tab_radio">Radio</string>
-    <string name="tab_prysmradio">Prysm</string>
+    <string name="tab_radio">Channels</string>
+    <string name="tab_prysmradio">News</string>
     <string name="tab_podcasts">Podcasts</string>
 
     <string name="radio_url">http://streaming.streamonomy.com/prysmradio-aac</string>
-    <string name="prysm_url">http://www.prysmradio.com/</string>
+    <string name="prysm_url">http://api.prysmradio.com/</string>
 
     <string name="title">Title: %s</string>
     <string name="artist">Artist: %s</string>
 
-    <string name="media_player_is_busy">Media Player is busy.</string>
+
+    <string name="now_playing">NOW PLAYING</string>
+    <string name="last_played">LAST PLAYED</string>
+    <string name="number_episodes">%d episodes</string>
+
+    <string name="by_author">by %s</string>
+
 </resources>

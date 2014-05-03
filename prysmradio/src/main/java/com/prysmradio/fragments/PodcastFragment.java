@@ -5,97 +5,33 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.prysmradio.R;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 import com.prysmradio.activities.PlayerActivity;
-import com.prysmradio.adapters.EpisodeAdapter;
-import com.prysmradio.api.ApiManager;
-import com.prysmradio.api.requests.EpisodeRequest;
 import com.prysmradio.bus.events.BusManager;
 import com.prysmradio.bus.events.EpisodeEvent;
-import com.prysmradio.bus.events.PodcastEvent;
-import com.prysmradio.bus.events.RetroFitErrorEvent;
 import com.prysmradio.objects.Podcast;
 import com.prysmradio.objects.PodcastEpisode;
 import com.prysmradio.utils.Constants;
-import com.prysmradio.utils.CroutonHelper;
-import com.squareup.otto.Subscribe;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by fx.oxeda on 24/03/2014.
  */
-public class PodcastFragment extends PrysmFragment implements AdapterView.OnItemClickListener {
-
-    @InjectView(R.id.podcast_imageView)
-    ImageView podcastImageView;
-    @InjectView(R.id.podcast_title_textView)
-    TextView titleTextView;
-    @InjectView(R.id.podcast_subtitle_textView)
-    TextView subtitleTextView;
-    @InjectView(R.id.episode_listView)
-    ListView episodesListView;
-    @InjectView(R.id.episodes_progressBar)
-    ProgressBar progressBar;
+public class PodcastFragment extends PrysmListFragment<PodcastEpisode> implements RequestListener<Podcast> {
 
     private Podcast podcast;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_podcast, container, false);
-
-        ButterKnife.inject(this, v);
-        BusManager.getInstance().getBus().register(this);
-
-        episodesListView.setOnItemClickListener(this);
-
-        ImageLoader.getInstance().displayImage(podcast.getInfos().getCover(), podcastImageView, new DisplayImageOptions.Builder().displayer(new FadeInBitmapDisplayer(300)).build());
-        titleTextView.setText(podcast.getTitle());
-        subtitleTextView.setText(podcast.getInfos().getSubtitle());
-
-        BusManager.getInstance().getBus().register(this);
-        ApiManager.getInstance().invoke(getActivity(), new EpisodeRequest(podcast));
-
-        return v;
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        BusManager.getInstance().getBus().unregister(this);
-    }
+    void onItemClicked(int position) {
+        PodcastEpisode episode = podcast.getEpisodes().get(position);
 
-    @Subscribe
-    public void onPodcastEvent(PodcastEvent event){
-        progressBar.setVisibility(View.GONE);
-        if (event.getPodcast() != null){
-            podcast = event.getPodcast();
-            EpisodeAdapter adapter = new EpisodeAdapter(getActivity(), event.getPodcast().getEpisodes());
-            episodesListView.setAdapter(adapter);
-        }
-    }
-
-    @Subscribe
-    public void onRetroFitErrorEvent(RetroFitErrorEvent event){
-        progressBar.setVisibility(View.GONE);
-        CroutonHelper.alert(getActivity(), event.getError().getMessage());
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        PodcastEpisode episode = podcast.getEpisodes().get(i);
-
-        Intent intent = new Intent(Constants.START_SERVICE_ACTION);
+        Intent intent = new Intent(Constants.START_PODCAST_SERVICE_ACTION);
         intent.putExtra(Constants.PODCAST_TITLE_EXTRA, episode.getTitle());
         intent.putExtra(Constants.EPISODE_TITLE_EXTRA, episode.getSubtitle());
         intent.putExtra(Constants.AUDIO_URL_EXTRA, episode.getAudioUrl());
@@ -109,6 +45,19 @@ public class PodcastFragment extends PrysmFragment implements AdapterView.OnItem
         getActivity().startActivity(podcastIntent);
 
         BusManager.getInstance().getBus().post(new EpisodeEvent(episode));
+    }
+
+    @Override
+    public void onRequestFailure(SpiceException spiceException) {
+        showError(spiceException.getMessage());
+    }
+
+    @Override
+    public void onRequestSuccess(Podcast podcast) {
+        progressBar.setVisibility(View.GONE);
+        if (podcast != null && podcast.getEpisodes() != null && podcast.getEpisodes().size() > 0){
+            notifyDataSetChanged(podcast.getEpisodes());
+        }
     }
 
     public void setPodcast(Podcast podcast) {
