@@ -52,7 +52,8 @@ public class RadioPlayerService extends PrysmAudioService implements PlayerCallb
 
                 audioUrl = intent.getStringExtra(Constants.AUDIO_URL_EXTRA);
 
-                if (state == STATE.SHOULD_LOAD_URL){
+                if (state == STATE.PLAYING){
+                    state = STATE.SHOULD_LOAD_URL;
                     player.stop();
                 } else {
                     start();

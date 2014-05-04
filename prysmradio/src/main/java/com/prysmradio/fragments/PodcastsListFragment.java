@@ -13,9 +13,7 @@ import com.prysmradio.R;
 import com.prysmradio.adapters.PodcastsAdapter;
 import com.prysmradio.api.requests.PodcastsRequest;
 import com.prysmradio.bus.events.BusManager;
-import com.prysmradio.bus.events.PodcastsListEvent;
 import com.prysmradio.objects.Podcast;
-import com.squareup.otto.Subscribe;
 
 /**
  * Created by fxoxe_000 on 24/03/2014.
@@ -48,16 +46,6 @@ public class PodcastsListFragment extends PrysmListFragment<Podcast> implements 
     public void onPause() {
         super.onPause();
         BusManager.getInstance().getBus().unregister(this);
-    }
-
-    @Subscribe
-    public void onPodcastsListEventReceived(PodcastsListEvent event) {
-        progressBar.setVisibility(View.GONE);
-        if (event.getPodcasts() != null){
-            items = event.getPodcasts();
-            adapter.addAll(items);
-            adapter.notifyDataSetChanged();
-        }
     }
 
     @Override

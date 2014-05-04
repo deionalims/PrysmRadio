@@ -11,15 +11,15 @@ public class EpisodeRequest extends RetrofitSpiceRequest<Podcast, PrysmApi> {
 
     public static String EPISODE_REQUEST = "edpisodeRequest";
 
-    private Podcast podcast;
+    private int podcastId;
 
-    public EpisodeRequest(Podcast pod) {
+    public EpisodeRequest(int pod) {
         super(Podcast.class, PrysmApi.class);
-        podcast = pod;
+        podcastId = pod;
     }
 
     @Override
     public Podcast loadDataFromNetwork() throws Exception {
-        return getService().getPodcast(podcast.getId());
+        return getService().getPodcast(podcastId);
     }
 }

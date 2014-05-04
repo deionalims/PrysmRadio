@@ -8,6 +8,9 @@ import java.util.ArrayList;
  */
 public class Radio implements Serializable {
 
+    private static final String AAC = "AAC";
+    private static final String MP3 = "MP3";
+
     private int id;
     private String name;
     private String description;
@@ -52,6 +55,26 @@ public class Radio implements Serializable {
 
     public void setStream(ArrayList<Stream> stream) {
         this.stream = stream;
+    }
+
+    public String getAACStreamURL(){
+        for(Stream s : stream){
+            if (AAC.equals(s.getStreamType())){
+                return s.getStreamUrl();
+            }
+        }
+
+        return null;
+    }
+
+    public String getMP3Stream(){
+        for(Stream s : stream){
+            if (MP3.equals(s.getStreamType())){
+                return s.getStreamUrl();
+            }
+        }
+
+        return null;
     }
 
     @SuppressWarnings("serial")

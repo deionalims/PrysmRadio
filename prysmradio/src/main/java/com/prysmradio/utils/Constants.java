@@ -14,6 +14,8 @@ public class Constants {
     public static final String STOP_PODCAST_SERVICE_ACTION = "com.prysmradio.podcast.service_stop";
     public static final String SEEK_PODCAST_SERVICE_ACTION = "com.prysmradio.podcast.service_seek";
 
+    // REQUEST CODES
+    public static final int METADATA_REQUEST_CODE = 1;
 
     // EXTRAS
     public static final String AUDIO_URL_EXTRA = "audio_url_extra";
@@ -23,4 +25,10 @@ public class Constants {
     public static final String LOADING_EXTRA = "loading_extra";
     public static final String SEEK_TO_EXTRA = "seek_to_extra";
     public static final String STREAM_TITLE_EXTRA = "stream_title_extra";
+    public static final String RADIO_EXTRA = "radio_extra";
+
+    // PREFERENCES
+    public static final String STREAM_INFO_PREFS = "stream_info_prefs";
+    public static final String RADIO_PREF = "radio_pref";
+    public static final String PODCAST_EPISODE_PREF = "podcase_episode_pref";
 }

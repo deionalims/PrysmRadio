@@ -10,17 +10,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.Toast;
 
 import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
 import com.prysmradio.adapters.MainPagerAdapter;
-import com.prysmradio.bus.events.EpisodeEvent;
-import com.prysmradio.bus.events.MediaPlayerErrorEvent;
 import com.prysmradio.fragments.BottomPlayerFragment;
-import com.prysmradio.objects.PodcastEpisode;
 import com.prysmradio.utils.Constants;
-import com.squareup.otto.Subscribe;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -30,8 +25,6 @@ import butterknife.OnClick;
 public class MainActivity extends PrysmActivity implements ActionBar.TabListener {
 
     @InjectView(R.id.pager) ViewPager mainViewPager;
-
-    private PodcastEpisode currentEpisode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,39 +92,20 @@ public class MainActivity extends PrysmActivity implements ActionBar.TabListener
         // probably ignore this event
     }
 
-    @Override
-    public void startStopAudioService() {
-        if (!((PrysmApplication) getApplicationContext()).isServiceIsRunning()){
-            ((PrysmApplication) getApplicationContext()).setServiceIsRunning(true);
-            Intent intent = new Intent(Constants.START_RADIO_SERVICE_ACTION);
-            intent.putExtra(Constants.AUDIO_URL_EXTRA, getString(R.string.radio_url));
-            startService(new Intent(intent));
-            currentEpisode = null;
-        } else {
-            ((PrysmApplication) getApplicationContext()).setServiceIsRunning(false);
-            startService(new Intent(Constants.STOP_RADIO_SERVICE_ACTION));
-        }
-    }
-
-
-
-    @Subscribe
-    public void onMediaPlayerErrorEventReceived(MediaPlayerErrorEvent event){
-        Toast.makeText(this, event.getMessage(), Toast.LENGTH_LONG).show();
-    }
-
-   @Subscribe
-    public void onCurrentEpisodeReceived(EpisodeEvent event){
-        currentEpisode = event.getEpisode();
-    }
-
     @OnClick(R.id.player_layout)
     public void playerLayoutOnClick(View v){
         if (((PrysmApplication) getApplicationContext()).isServiceIsRunning()) {
-            Intent podcastIntent = new Intent(this, PlayerActivity.class);
-            podcastIntent.putExtra(Constants.EPISODE_EXTRA, currentEpisode);
-            podcastIntent.putExtra(Constants.STREAM_TITLE_EXTRA, bottomPlayerFragment.getStreamTitle());
-            startActivity(podcastIntent);
+            Intent intent = new Intent(this, PlayerActivity.class);
+            intent.putExtra(Constants.STREAM_TITLE_EXTRA, bottomPlayerFragment.getStreamTitle());
+            startActivityForResult(intent, Constants.METADATA_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.METADATA_REQUEST_CODE && resultCode == RESULT_OK){
+            String streamTitle = data.getStringExtra(Constants.STREAM_TITLE_EXTRA);
+            bottomPlayerFragment.setStreamTitleTextView(streamTitle);
         }
     }
 }

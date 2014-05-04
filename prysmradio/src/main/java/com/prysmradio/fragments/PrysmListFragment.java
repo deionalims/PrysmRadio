@@ -36,12 +36,16 @@ public abstract class PrysmListFragment<E> extends PrysmFragment implements Adap
 
         ButterKnife.inject(this, rootView);
 
+        listView.setOnItemClickListener(this);
+
         return rootView;
     }
 
     protected void notifyDataSetChanged(List<E> newItems){
         items = newItems;
-        adapter.addAll(items);
+        for (E item : newItems){
+            adapter.add(item);
+        }
         adapter.notifyDataSetChanged();
     }
 

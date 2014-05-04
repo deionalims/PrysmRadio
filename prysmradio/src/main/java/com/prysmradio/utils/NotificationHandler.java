@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
 import com.prysmradio.R;
@@ -27,7 +28,7 @@ public class NotificationHandler {
         // The PendingIntent to launch our activity if the user selects this notification
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
 
-        mNotifyObj = new Notification.Builder(context)
+        mNotifyObj = new NotificationCompat.Builder(context)
                 .setContent(mNotifyView)
                 .setSmallIcon(R.drawable.prysm_logo)
                 .setOngoing(true)

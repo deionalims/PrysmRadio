@@ -14,14 +14,12 @@
             android:background="@color/tab_selected_color"/>
 
         <include
-            layout="@layout/include_current_radio_info"
-            android:visibility="gone"/>
+            layout="@layout/include_current_radio_info"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/white"
-            android:visibility="gone"/>
+            android:background="@android:color/white"/>
 
         <include
             layout="@layout/include_now_playing"/>

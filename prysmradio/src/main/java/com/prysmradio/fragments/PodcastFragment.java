@@ -9,11 +9,12 @@ import android.view.ViewGroup;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 import com.prysmradio.activities.PlayerActivity;
-import com.prysmradio.bus.events.BusManager;
-import com.prysmradio.bus.events.EpisodeEvent;
+import com.prysmradio.adapters.EpisodeAdapter;
+import com.prysmradio.api.requests.EpisodeRequest;
 import com.prysmradio.objects.Podcast;
 import com.prysmradio.objects.PodcastEpisode;
 import com.prysmradio.utils.Constants;
+import com.prysmradio.utils.CurrentStreamInfo;
 
 /**
  * Created by fx.oxeda on 24/03/2014.
@@ -28,8 +29,21 @@ public class PodcastFragment extends PrysmListFragment<PodcastEpisode> implement
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        adapter = new EpisodeAdapter(getActivity());
+        listView.setAdapter(adapter);
+
+        EpisodeRequest request = new EpisodeRequest(podcast.getId());
+        getSpiceManager().execute(request, this);
+    }
+
+    @Override
     void onItemClicked(int position) {
         PodcastEpisode episode = podcast.getEpisodes().get(position);
+        episode.setSummary(podcast.getInfos().getSummary());
+        CurrentStreamInfo.getInstance().setPodcastEpisode(episode);
 
         Intent intent = new Intent(Constants.START_PODCAST_SERVICE_ACTION);
         intent.putExtra(Constants.PODCAST_TITLE_EXTRA, episode.getTitle());
@@ -38,13 +52,10 @@ public class PodcastFragment extends PrysmListFragment<PodcastEpisode> implement
 
         getActivity().startService(intent);
 
-        episode.setSummary(podcast.getInfos().getSummary()  );
         Intent podcastIntent = new Intent(getActivity(), PlayerActivity.class);
         podcastIntent.putExtra(Constants.EPISODE_EXTRA, episode);
         podcastIntent.putExtra(Constants.LOADING_EXTRA, true);
         getActivity().startActivity(podcastIntent);
-
-        BusManager.getInstance().getBus().post(new EpisodeEvent(episode));
     }
 
     @Override
@@ -56,6 +67,7 @@ public class PodcastFragment extends PrysmListFragment<PodcastEpisode> implement
     public void onRequestSuccess(Podcast podcast) {
         progressBar.setVisibility(View.GONE);
         if (podcast != null && podcast.getEpisodes() != null && podcast.getEpisodes().size() > 0){
+            this.podcast = podcast;
             notifyDataSetChanged(podcast.getEpisodes());
         }
     }

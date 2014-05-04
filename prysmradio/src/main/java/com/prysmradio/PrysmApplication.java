@@ -1,11 +1,18 @@
 package com.prysmradio;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
+import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.prysmradio.objects.PodcastEpisode;
+import com.prysmradio.objects.Radio;
+import com.prysmradio.utils.Constants;
+import com.prysmradio.utils.CurrentStreamInfo;
 import com.prysmradio.utils.NotificationHandler;
 
 /**
@@ -33,6 +40,22 @@ public class PrysmApplication extends Application {
                 .build();
 
         ImageLoader.getInstance().init(config);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        Gson gson = new Gson();
+        String json = preferences.getString(Constants.RADIO_PREF, null);
+        if (json != null){
+            Radio radio = gson.fromJson(json, Radio.class);
+            CurrentStreamInfo.getInstance().setCurrentRadio(radio);
+        } else {
+            String podcast = preferences.getString(Constants.PODCAST_EPISODE_PREF, null);
+            if (podcast != null){
+                PodcastEpisode episode = gson.fromJson(podcast, PodcastEpisode.class);
+                CurrentStreamInfo.getInstance().setPodcastEpisode(episode);
+            }
+        }
+
     }
 
     public NotificationHandler getNotificationHandler() {
