@@ -97,6 +97,7 @@ public class MainActivity extends PrysmActivity implements ActionBar.TabListener
         if (((PrysmApplication) getApplicationContext()).isServiceIsRunning()) {
             Intent intent = new Intent(this, PlayerActivity.class);
             intent.putExtra(Constants.STREAM_TITLE_EXTRA, bottomPlayerFragment.getStreamTitle());
+            intent.putExtra(Constants.STREAM_ARTIST_EXTRA, bottomPlayerFragment.getStreamArtist());
             startActivityForResult(intent, Constants.METADATA_REQUEST_CODE);
         }
     }
@@ -106,6 +107,8 @@ public class MainActivity extends PrysmActivity implements ActionBar.TabListener
         if (requestCode == Constants.METADATA_REQUEST_CODE && resultCode == RESULT_OK){
             String streamTitle = data.getStringExtra(Constants.STREAM_TITLE_EXTRA);
             bottomPlayerFragment.setStreamTitleTextView(streamTitle);
+            String streamArtist = data.getStringExtra(Constants.STREAM_ARTIST_EXTRA);
+            bottomPlayerFragment.setStreamArtistTextView(streamArtist);
         }
     }
 }

@@ -42,4 +42,7 @@ public interface PrysmApi {
 
     @GET(NEWS)
     News.List getNews(@Query("limit") String limit);
+
+    @GET(NEWS + "/{id}")
+    News getNews(@Path("id") int newsId);
 }

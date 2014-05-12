@@ -13,6 +13,24 @@ public class News implements Serializable {
     private String title;
     private String author;
     private String thumb;
+    private String content;
+    private String guid;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
 
     public int getId() {
         return id;

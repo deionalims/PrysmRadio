@@ -78,6 +78,8 @@ public class PodcastPlayerService extends PrysmAudioService implements MediaPlay
                 } else {
                     start();
                 }
+            } else {
+                progressChecker.run();
             }
         } else if (action.equals(Constants.STOP_PODCAST_SERVICE_ACTION)) {
             if (state == STATE.PREPARING) {

@@ -24,8 +24,10 @@ public class Constants {
     public static final String EPISODE_EXTRA = "episode_extra";
     public static final String LOADING_EXTRA = "loading_extra";
     public static final String SEEK_TO_EXTRA = "seek_to_extra";
+    public static final String STREAM_ARTIST_EXTRA = "stream_artist_extra";
     public static final String STREAM_TITLE_EXTRA = "stream_title_extra";
     public static final String RADIO_EXTRA = "radio_extra";
+    public static final String NEWS_EXTRA = "news_extra";
 
     // PREFERENCES
     public static final String STREAM_INFO_PREFS = "stream_info_prefs";

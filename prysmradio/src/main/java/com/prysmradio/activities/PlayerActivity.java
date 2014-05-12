@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.Window;
 
 import com.prysmradio.R;
@@ -30,11 +31,15 @@ public class PlayerActivity extends PrysmActivity {
 
         bottomPlayerFragment = (BottomPlayerFragment) fm.findFragmentById(R.id.fragment_bottom_player);
         String streamTitle = getIntent().getStringExtra(Constants.STREAM_TITLE_EXTRA);
-        if (streamTitle != null){
+        String streamArtist = getIntent().getStringExtra(Constants.STREAM_ARTIST_EXTRA);
+        if (!TextUtils.isEmpty(streamTitle)){
             bottomPlayerFragment.setStreamTitleTextView(streamTitle);
         }
+        if (!TextUtils.isEmpty(streamArtist)){
+            bottomPlayerFragment.setStreamArtistTextView(streamArtist);
+        }
 
-        Fragment fragment = null;
+        Fragment fragment;
 
         if (CurrentStreamInfo.getInstance().getPodcastEpisode() != null){
             fragment = new EpisodeFragment();
@@ -54,6 +59,7 @@ public class PlayerActivity extends PrysmActivity {
     public void onBackPressed() {
         Intent returnIntent = new Intent();
         returnIntent.putExtra(Constants.STREAM_TITLE_EXTRA, bottomPlayerFragment.getStreamTitle());
+        returnIntent.putExtra(Constants.STREAM_ARTIST_EXTRA, bottomPlayerFragment.getStreamArtist());
         setResult(RESULT_OK, returnIntent);
         finish();
     }

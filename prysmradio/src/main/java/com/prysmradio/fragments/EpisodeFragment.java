@@ -10,11 +10,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
 import com.prysmradio.bus.events.BusManager;
 import com.prysmradio.bus.events.UpdateEpisodeProgressEvent;
-import com.prysmradio.bus.events.UpdateMetaDataEvent;
 import com.prysmradio.bus.events.UpdatePlayerEvent;
+import com.prysmradio.bus.events.UpdatePodcastTitleEvent;
 import com.prysmradio.objects.PodcastEpisode;
 import com.prysmradio.utils.Constants;
 import com.prysmradio.utils.CurrentStreamInfo;
@@ -81,19 +82,25 @@ public class EpisodeFragment extends PrysmFragment implements SeekBar.OnSeekBarC
                             TimeUnit.MILLISECONDS.toMinutes((int)episode.getDuration()),
                             TimeUnit.MILLISECONDS.toSeconds((int)episode.getDuration()) -
                                     TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((int)episode.getDuration()))));
+
+            if (((PrysmApplication) getActivity().getApplicationContext()).isServiceIsRunning()){
+                getActivity().setProgressBarIndeterminateVisibility(false);
+            }
+
         }
     }
 
     @Subscribe
     public void onUpdatePlayerEventReceived(UpdatePlayerEvent event){
         if (event.isPlaying()){
+            getActivity().setProgressBarIndeterminateVisibility(false);
             totalTimeTextView.setText(
                     String.format("%02d:%02d",
                             TimeUnit.MILLISECONDS.toMinutes(event.getDuration()),
                             TimeUnit.MILLISECONDS.toSeconds(event.getDuration()) -
                                     TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(event.getDuration()))));
             seekBar.setMax(event.getDuration());
-            BusManager.getInstance().getBus().post(new UpdateMetaDataEvent(episode.getTitle()));
+            BusManager.getInstance().getBus().post(new UpdatePodcastTitleEvent(episode.getTitle(), episode.getSubtitle()));
         }
     }
 

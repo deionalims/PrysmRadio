@@ -1,5 +1,6 @@
 package com.prysmradio.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +9,11 @@ import android.view.ViewGroup;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
+import com.prysmradio.activities.NewsActivity;
 import com.prysmradio.adapters.NewsAdapter;
 import com.prysmradio.api.requests.NewsRequest;
 import com.prysmradio.objects.News;
+import com.prysmradio.utils.Constants;
 
 /**
  * Created by fx.oxeda on 31/03/2014.
@@ -35,7 +38,10 @@ public class NewsListFragment extends PrysmListFragment<News> implements Request
 
     @Override
     void onItemClicked(int position) {
-
+        News news = items.get(position);
+        Intent intent = new Intent(getActivity(), NewsActivity.class);
+        intent.putExtra(Constants.NEWS_EXTRA, news.getId());
+        getActivity().startActivity(intent);
     }
 
     @Override

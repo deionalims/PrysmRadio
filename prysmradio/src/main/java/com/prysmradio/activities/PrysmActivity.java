@@ -3,17 +3,14 @@ package com.prysmradio.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
 
 import com.google.gson.Gson;
-import com.octo.android.robospice.SpiceManager;
 import com.prysmradio.PrysmApplication;
 import com.prysmradio.bus.events.BusManager;
 import com.prysmradio.bus.events.UpdateCoverEvent;
-import com.prysmradio.bus.events.UpdateMetaDataEvent;
 import com.prysmradio.bus.events.UpdatePlayerEvent;
+import com.prysmradio.bus.events.UpdatePodcastTitleEvent;
 import com.prysmradio.fragments.BottomPlayerFragment;
-import com.prysmradio.services.PrysmRetrofitSpiceService;
 import com.prysmradio.utils.Constants;
 import com.prysmradio.utils.CurrentStreamInfo;
 import com.squareup.otto.Subscribe;
@@ -21,26 +18,9 @@ import com.squareup.otto.Subscribe;
 /**
  * Created by fxoxe_000 on 03/05/2014.
  */
-public class PrysmActivity extends ActionBarActivity {
+public class PrysmActivity extends BaseActivity {
 
-    private SpiceManager spiceManager = new SpiceManager(PrysmRetrofitSpiceService.class);
     protected BottomPlayerFragment bottomPlayerFragment;
-
-    @Override
-    protected void onStart() {
-        spiceManager.start(this);
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        spiceManager.shouldStop();
-        super.onStop();
-    }
-
-    public SpiceManager getSpiceManager() {
-        return spiceManager;
-    }
 
     @Subscribe
     public void onUpdatePlayerEventReceived(UpdatePlayerEvent event){
@@ -85,7 +65,7 @@ public class PrysmActivity extends ActionBarActivity {
             } else if (CurrentStreamInfo.getInstance().getPodcastEpisode() != null){
                 Intent intent = new Intent(Constants.START_PODCAST_SERVICE_ACTION);
                 intent.putExtra(Constants.AUDIO_URL_EXTRA, CurrentStreamInfo.getInstance().getPodcastEpisode().getAudioUrl());
-                BusManager.getInstance().getBus().post(new UpdateMetaDataEvent(CurrentStreamInfo.getInstance().getPodcastEpisode().getTitle()));
+                BusManager.getInstance().getBus().post(new UpdatePodcastTitleEvent(CurrentStreamInfo.getInstance().getPodcastEpisode().getTitle(), CurrentStreamInfo.getInstance().getPodcastEpisode().getSubtitle()));
                 startService(new Intent(intent));
             }
         } else {

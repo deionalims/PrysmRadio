@@ -30,6 +30,9 @@
         <activity android:name=".activities.PlayerActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".activities.NewsActivity"
+            android:screenOrientation="portrait"/>
+
         <service android:name=".services.RadioPlayerService"
             android:exported="false">
 
