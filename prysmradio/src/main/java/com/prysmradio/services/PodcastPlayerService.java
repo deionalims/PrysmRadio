@@ -11,7 +11,9 @@ import com.prysmradio.bus.events.BusManager;
 import com.prysmradio.bus.events.UpdateEpisodeProgressEvent;
 import com.prysmradio.bus.events.UpdatePlayerEvent;
 import com.prysmradio.bus.events.UpdatePodcastTitleEvent;
+import com.prysmradio.objects.PodcastEpisode;
 import com.prysmradio.utils.Constants;
+import com.prysmradio.utils.CurrentStreamInfo;
 
 import java.io.IOException;
 
@@ -100,6 +102,10 @@ public class PodcastPlayerService extends PrysmAudioService implements MediaPlay
 
     protected synchronized void start() {
         super.start();
+
+        PodcastEpisode episode = CurrentStreamInfo.getInstance().getPodcastEpisode();
+
+        startForeground(Constants.NOTIFICATION_ID, ((PrysmApplication) getApplicationContext()).getNotificationHandler().getNotification(episode.getCover(), episode.getTitle(), episode.getSubtitle()));
 
         int result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC,
                 AudioManager.AUDIOFOCUS_GAIN);

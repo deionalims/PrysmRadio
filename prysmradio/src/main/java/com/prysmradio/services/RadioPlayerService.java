@@ -73,6 +73,8 @@ public class RadioPlayerService extends PrysmAudioService implements PlayerCallb
     protected synchronized void start() {
         super.start();
 
+        startForeground(Constants.NOTIFICATION_ID, ((PrysmApplication) getApplicationContext()).getNotificationHandler().getNotification());
+
         int result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC,
                 AudioManager.AUDIOFOCUS_GAIN);
 
