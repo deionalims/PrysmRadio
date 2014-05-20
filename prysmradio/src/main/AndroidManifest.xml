@@ -33,6 +33,9 @@
         <activity android:name=".activities.NewsActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".activities.PrysmSettingsActivity"
+            android:screenOrientation="portrait" />
+
         <service android:name=".services.RadioPlayerService"
             android:exported="false">
 
@@ -40,7 +43,6 @@
                 <action android:name="com.prysmradio.radio.service_start"/>
                 <action android:name="com.prysmradio.radio.service_stop"/>
             </intent-filter>
-
         </service>
 
         <service android:name=".services.PodcastPlayerService"
