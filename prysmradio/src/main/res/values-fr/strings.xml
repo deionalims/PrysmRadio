@@ -2,28 +2,22 @@
 <resources>
 
     <string name="app_name">PrysmRadio</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Paramètres</string>
 
-    <string name="tab_radio">Channels</string>
+    <string name="tab_radio">Radios</string>
     <string name="tab_prysmradio">News</string>
     <string name="tab_podcasts">Podcasts</string>
 
     <string name="radio_url">http://streaming.streamonomy.com/prysmradio-aac</string>
     <string name="prysm_url">http://api.prysmradio.com/</string>
 
-    <string name="title">Title: %s</string>
-    <string name="artist">Artist: %s</string>
-
+    <string name="title">Titre: %s</string>
+    <string name="artist">Artiste: %s</string>
 
     <string name="now_playing">NOW PLAYING</string>
     <string name="last_played">LAST PLAYED</string>
     <string name="number_episodes">%d episodes</string>
 
-    <string name="by_author">by %s</string>
-
-    <string name="pref_auto_play">Automatic Launch</string>
-    <string name="pref_auto_play_summ">Launch audio stream on application startup</string>
-    <string name="pref_lanquage">Language</string>
-    <string name="pref_languages_default">1</string>
+    <string name="by_author">par %s</string>
 
 </resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="pref_auto_play"
+        android:title="@string/pref_auto_play"
+        android:summary="@string/pref_auto_play_summ"
+        android:defaultValue="false" />
+    <ListPreference
+        android:dependency="pref_sync"
+        android:key="pref_language"
+        android:title="@string/pref_lanquage"
+        android:dialogTitle="@string/pref_lanquage"
+        android:entries="@array/pref_languages_entries"
+        android:entryValues="@array/pref_languages_values"
+        android:defaultValue="@string/pref_languages_default" />
+</PreferenceScreen>

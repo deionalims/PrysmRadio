@@ -52,8 +52,6 @@ public class MainActivity extends PrysmActivity implements ActionBar.TabListener
                 getSupportActionBar().setSelectedNavigationItem(position);
             }
         });
-
-
     }
 
 
@@ -73,6 +71,8 @@ public class MainActivity extends PrysmActivity implements ActionBar.TabListener
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, PrysmSettingsActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
