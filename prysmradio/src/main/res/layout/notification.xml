@@ -46,4 +46,12 @@
             android:ellipsize="end" />
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/notification_stop_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_stop"
+        android:layout_gravity="center"
+        android:layout_marginRight="5dp"/>
+
 </LinearLayout>

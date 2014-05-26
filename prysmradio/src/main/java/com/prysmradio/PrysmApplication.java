@@ -15,6 +15,8 @@ import com.prysmradio.utils.Constants;
 import com.prysmradio.utils.CurrentStreamInfo;
 import com.prysmradio.utils.NotificationHandler;
 
+import java.util.Locale;
+
 /**
  * Created by fxoxe_000 on 14/03/14.
  */
@@ -54,6 +56,13 @@ public class PrysmApplication extends Application {
                 PodcastEpisode episode = gson.fromJson(podcast, PodcastEpisode.class);
                 CurrentStreamInfo.getInstance().setPodcastEpisode(episode);
             }
+        }
+
+        String lang = preferences.getString(Constants.LANGUAGE_PREF, null);
+        if (null == lang){
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(Constants.LANGUAGE_PREF, Locale.getDefault().getLanguage());
+            editor.commit();
         }
 
     }

@@ -40,9 +40,9 @@ public interface PrysmApi {
     @GET(PODCAST + "/{id}")
     Podcast getPodcast(@Path("id") int id);
 
-    @GET(NEWS)
-    News.List getNews(@Query("limit") String limit);
+    @GET(NEWS + "/{language}")
+    News.List getNews(@Path("language") String language, @Query("limit") String limit);
 
-    @GET(NEWS + "/{id}")
-    News getNews(@Path("id") int newsId);
+    @GET(NEWS + "/{language}" + "/{id}")
+    News getNews(@Path("language") String language, @Path("id") int newsId);
 }

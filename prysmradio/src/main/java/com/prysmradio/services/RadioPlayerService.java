@@ -90,6 +90,17 @@ public class RadioPlayerService extends PrysmAudioService implements PlayerCallb
     }
 
     @Override
+    void pauseMusic() {
+        state = STATE.STOPPED;
+        player.stop();
+    }
+
+    @Override
+    void resumeMusic() {
+        player.playAsync(audioUrl);
+    }
+
+    @Override
     public void playerStarted() {
         if (state == STATE.SHOULD_QUIT || state == STATE.SHOULD_LOAD_URL){
             player.stop();

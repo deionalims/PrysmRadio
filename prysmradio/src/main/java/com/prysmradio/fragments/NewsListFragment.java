@@ -2,6 +2,7 @@ package com.prysmradio.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,9 @@ public class NewsListFragment extends PrysmListFragment<News> implements Request
         adapter = new NewsAdapter(getActivity());
         listView.setAdapter(adapter);
 
-        NewsRequest request = new NewsRequest(0);
+        String lang = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(Constants.LANGUAGE_PREF, null);
+
+        NewsRequest request = new NewsRequest(0, lang);
         getSpiceManager().execute(request, NewsRequest.NEWS_REQUEST, DurationInMillis.ONE_MINUTE, this);
     }
 

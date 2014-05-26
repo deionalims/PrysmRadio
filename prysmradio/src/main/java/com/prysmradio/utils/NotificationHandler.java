@@ -39,6 +39,12 @@ public class NotificationHandler {
         // The PendingIntent to launch our activity if the user selects this notification
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
 
+        Intent stopIntent = new Intent(context, MainActivity.class);
+        stopIntent.putExtra(Constants.STOP_EXTRA, true);
+        PendingIntent stopPendingIntent = PendingIntent.getActivity(context, 1, stopIntent, 0);
+
+        mNotifyView.setOnClickPendingIntent(R.id.notification_stop_button, stopPendingIntent);
+
         mNotifyObj = new NotificationCompat.Builder(context)
                 .setContent(mNotifyView)
                 .setSmallIcon(R.drawable.prysm_logo)

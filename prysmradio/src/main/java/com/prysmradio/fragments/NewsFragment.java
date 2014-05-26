@@ -1,10 +1,12 @@
 package com.prysmradio.fragments;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.octo.android.robospice.SpiceManager;
@@ -14,6 +16,7 @@ import com.prysmradio.R;
 import com.prysmradio.activities.BaseActivity;
 import com.prysmradio.api.requests.NewsDetailsRequest;
 import com.prysmradio.objects.News;
+import com.prysmradio.utils.Constants;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -37,8 +40,11 @@ public class NewsFragment extends PrysmFragment implements RequestListener<News>
         ButterKnife.inject(this, v);
 
         newsWebView.getSettings().setJavaScriptEnabled(true);
+        newsWebView.setWebViewClient(new WebViewClient());
 
-        NewsDetailsRequest request = new NewsDetailsRequest(newsId);
+        String lang = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(Constants.LANGUAGE_PREF, null);
+
+        NewsDetailsRequest request = new NewsDetailsRequest(newsId, lang);
         getSpiceManager().execute(request, this);
 
         return v;
@@ -54,7 +60,7 @@ public class NewsFragment extends PrysmFragment implements RequestListener<News>
     public void onRequestSuccess(News news) {
         newsProgressBar.setVisibility(View.GONE);
 
-        newsWebView.loadData("<html><body>" + news.getContent() + "</body></html>", "text/html", null);
+        newsWebView.loadUrl(news.getGuid());
     }
 
     public int getNewsId() {

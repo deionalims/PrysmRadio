@@ -28,9 +28,11 @@ public class Constants {
     public static final String STREAM_TITLE_EXTRA = "stream_title_extra";
     public static final String RADIO_EXTRA = "radio_extra";
     public static final String NEWS_EXTRA = "news_extra";
+    public static final String STOP_EXTRA = "stop_extra";
 
     // PREFERENCES
     public static final String STREAM_INFO_PREFS = "stream_info_prefs";
     public static final String RADIO_PREF = "radio_pref";
     public static final String PODCAST_EPISODE_PREF = "podcase_episode_pref";
+    public static final String LANGUAGE_PREF = "language_pref";
 }

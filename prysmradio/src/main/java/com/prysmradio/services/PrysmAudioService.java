@@ -80,6 +80,10 @@ public abstract class PrysmAudioService extends Service implements AudioManager.
         startForeground(Constants.NOTIFICATION_ID, ((PrysmApplication) getApplicationContext()).getNotificationHandler().getNotification());
     }
 
+    abstract void pauseMusic();
+    abstract void resumeMusic();
+
+
     protected synchronized void stop() {
 
         runOnUiThread(new Runnable() {
@@ -138,11 +142,12 @@ public abstract class PrysmAudioService extends Service implements AudioManager.
         public void onCallStateChanged(int state, String incomingNumber) {
             if (state == TelephonyManager.CALL_STATE_RINGING) // Incoming call: Pause music
             {
-
+                mWasPlayingWhenCalled = true;
+                pauseMusic();
             } else if (state == TelephonyManager.CALL_STATE_IDLE) // Not in call: Play music
             {
                 if (mWasPlayingWhenCalled) {
-                    start();
+                    resumeMusic();
                     mWasPlayingWhenCalled = false;
                 }
             }

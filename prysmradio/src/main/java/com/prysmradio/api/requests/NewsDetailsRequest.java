@@ -12,14 +12,17 @@ public class NewsDetailsRequest extends RetrofitSpiceRequest<News, PrysmApi> {
     public static String NEWS_DETAILS_REQUEST = "newsDetailsRequest";
 
     private int newsId;
+    private String lang;
 
-    public NewsDetailsRequest(int id) {
+    public NewsDetailsRequest(int id, String lang) {
         super(News.class, PrysmApi.class);
         this.newsId = id;
+        this.lang = lang;
     }
 
     @Override
     public News loadDataFromNetwork() throws Exception {
-        return getService().getNews(newsId);
+
+        return getService().getNews(lang, newsId);
     }
 }

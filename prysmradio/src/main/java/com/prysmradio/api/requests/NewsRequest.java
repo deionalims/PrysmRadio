@@ -13,15 +13,17 @@ public class NewsRequest extends RetrofitSpiceRequest<News.List, PrysmApi> {
 
     private static final int LIMIT = 10;
     private int start;
+    private String lang;
 
-    public NewsRequest(int start) {
+    public NewsRequest(int start, String lang) {
         super(News.List.class, PrysmApi.class);
         this.start = start;
+        this.lang = lang;
     }
 
     @Override
     public News.List loadDataFromNetwork() throws Exception {
         String param = String.format("%d,%d", start, LIMIT);
-        return getService().getNews(param);
+        return getService().getNews(lang, param);
     }
 }

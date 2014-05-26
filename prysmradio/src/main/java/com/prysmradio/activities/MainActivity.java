@@ -111,4 +111,14 @@ public class MainActivity extends PrysmActivity implements ActionBar.TabListener
             bottomPlayerFragment.setStreamArtistTextView(streamArtist);
         }
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Bundle data = intent.getExtras();
+        if (data != null && data.getBoolean(Constants.STOP_EXTRA, false)) {
+            startStopAudioService();
+        }
+    }
 }
