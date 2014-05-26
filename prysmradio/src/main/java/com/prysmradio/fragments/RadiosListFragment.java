@@ -67,7 +67,7 @@ public class RadiosListFragment extends PrysmListFragment<Radio> implements Requ
         Intent intent = new Intent(Constants.START_RADIO_SERVICE_ACTION);
         intent.putExtra(Constants.AUDIO_URL_EXTRA, radio.getAACStreamURL());
 
-        getActivity().startService(new Intent(intent));
+        getActivity().startService(intent);
 
         Intent podcastIntent = new Intent(getActivity(), PlayerActivity.class);
         podcastIntent.putExtra(Constants.RADIO_EXTRA, radio);

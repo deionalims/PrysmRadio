@@ -126,12 +126,18 @@ public class PodcastPlayerService extends PrysmAudioService implements MediaPlay
 
     @Override
     void pauseMusic() {
-        mMediaPlayer.pause();
+        if (mMediaPlayer != null && mMediaPlayer.isPlaying()){
+            mMediaPlayer.pause();
+            state = STATE.STOPPED;
+        }
     }
 
     @Override
     void resumeMusic() {
-        mMediaPlayer.start();
+        if (mMediaPlayer != null){
+            mMediaPlayer.start();
+            state = STATE.PLAYING;
+        }
     }
 
     protected synchronized void stop() {

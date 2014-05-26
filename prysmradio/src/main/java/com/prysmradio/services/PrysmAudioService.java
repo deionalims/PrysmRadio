@@ -56,10 +56,6 @@ public abstract class PrysmAudioService extends Service implements AudioManager.
         ((PrysmApplication) getApplicationContext()).setServiceIsRunning(false);
 
         BusManager.getInstance().getBus().unregister(this);
-
-        TelephonyManager mgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-        if( mgr != null )
-            mgr.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
     }
 
     @Override
@@ -95,8 +91,8 @@ public abstract class PrysmAudioService extends Service implements AudioManager.
 
         stopForeground(true);
         audioManager.abandonAudioFocus(this);
+        Log.v("MICHEL", "STOPPING " + serviceID);
         stopSelf(serviceID);
-
     }
 
     protected void runOnUiThread(Runnable runnable) {
@@ -122,7 +118,6 @@ public abstract class PrysmAudioService extends Service implements AudioManager.
                 // Lost focus for a short time, but we have to stop
                 // playback. We don't release the media player because playback
                 // is likely to resume
-                stop();
                 break;
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                 if (state == STATE.PLAYING){
@@ -140,6 +135,7 @@ public abstract class PrysmAudioService extends Service implements AudioManager.
 
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
+
             if (state == TelephonyManager.CALL_STATE_RINGING) // Incoming call: Pause music
             {
                 mWasPlayingWhenCalled = true;

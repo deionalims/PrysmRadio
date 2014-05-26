@@ -35,8 +35,11 @@ public class PodcastFragment extends PrysmListFragment<PodcastEpisode> implement
         adapter = new EpisodeAdapter(getActivity());
         listView.setAdapter(adapter);
 
-        EpisodeRequest request = new EpisodeRequest(podcast.getId());
-        getSpiceManager().execute(request, this);
+        if (podcast != null){
+            EpisodeRequest request = new EpisodeRequest(podcast.getId());
+            getSpiceManager().execute(request, this);
+        }
+
     }
 
     @Override

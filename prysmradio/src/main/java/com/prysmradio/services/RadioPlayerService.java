@@ -47,7 +47,7 @@ public class RadioPlayerService extends PrysmAudioService implements PlayerCallb
         ((PrysmApplication) getApplicationContext()).setServiceIsRunning(true);
 
         if (action.equals(Constants.START_RADIO_SERVICE_ACTION)) {
-
+            Log.v("MICHEL", "STARTING " + serviceID);
             if (audioUrl == null || !audioUrl.equals(intent.getStringExtra(Constants.AUDIO_URL_EXTRA))){
 
                 audioUrl = intent.getStringExtra(Constants.AUDIO_URL_EXTRA);
@@ -86,18 +86,24 @@ public class RadioPlayerService extends PrysmAudioService implements PlayerCallb
     protected synchronized void stop(){
         state = STATE.STOPPED;
         player.stop();
+        player = null;
         super.stop();
     }
 
     @Override
     void pauseMusic() {
-        state = STATE.STOPPED;
-        player.stop();
+        if (player != null){
+            state = STATE.STOPPED;
+            player.stop();
+        }
     }
 
     @Override
     void resumeMusic() {
-        player.playAsync(audioUrl);
+        if (player != null){
+            player.playAsync(audioUrl);
+            state = STATE.PLAYING;
+        }
     }
 
     @Override
@@ -128,8 +134,6 @@ public class RadioPlayerService extends PrysmAudioService implements PlayerCallb
             start();
         } else if (state == STATE.PLAYING){
             player.playAsync(audioUrl);
-        } else {
-            stop();
         }
     }
 
