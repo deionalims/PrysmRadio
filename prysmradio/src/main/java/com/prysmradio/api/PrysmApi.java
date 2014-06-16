@@ -17,7 +17,7 @@ public interface PrysmApi {
     //static final String API = "/bomgmt/api";
     static final String RADIOS = "/radios";
     static final String RADIO = "/radio";
-    static final String PODCAST = "/podcast";
+    static final String PODCAST = "/podcast/fr";
     static final String CURRENT = "/current";
     static final String NEWS = "/news";
     static final String LAST = "/last";

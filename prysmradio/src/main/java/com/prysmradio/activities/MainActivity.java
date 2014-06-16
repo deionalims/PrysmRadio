@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
+import com.facebook.widget.FacebookDialog;
 import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
 import com.prysmradio.adapters.MainPagerAdapter;
@@ -75,6 +76,16 @@ public class MainActivity extends PrysmActivity implements ActionBar.TabListener
             startActivity(intent);
             return true;
         }
+
+        if (id == R.id.action_share){
+
+            FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(this)
+                    .setLink("http://www.prysmradio.com/")
+                    .setApplicationName("Prysm Radio France")
+                    .build();
+            uiHelper.trackPendingDialogCall(shareDialog.present());
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -104,6 +115,7 @@ public class MainActivity extends PrysmActivity implements ActionBar.TabListener
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.METADATA_REQUEST_CODE && resultCode == RESULT_OK){
             String streamTitle = data.getStringExtra(Constants.STREAM_TITLE_EXTRA);
             bottomPlayerFragment.setStreamTitleTextView(streamTitle);

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="app_id">662647277107407</string>
+
     <string name="app_name">PrysmRadio</string>
     <string name="action_settings">Settings</string>
 
@@ -25,5 +27,7 @@
     <string name="pref_auto_play_summ">Launch audio stream on application startup</string>
     <string name="pref_lanquage">Language</string>
     <string name="pref_languages_default">1</string>
+
+    <string name="action_share">share</string>
 
 </resources>

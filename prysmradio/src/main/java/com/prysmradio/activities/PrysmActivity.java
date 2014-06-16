@@ -45,7 +45,7 @@ public class PrysmActivity extends BaseActivity {
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         BusManager.getInstance().getBus().unregister(this);
     }

@@ -1,1 +1,1 @@
-include ':prysmradio'
+include ':prysmradio', ':facebook'
