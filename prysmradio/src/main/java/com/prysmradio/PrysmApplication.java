@@ -61,10 +61,10 @@ public class PrysmApplication extends Application {
             }
         }
 
-        String lang = preferences.getString(Constants.LANGUAGE_PREF, null);
+        String lang = preferences.getString(getString(R.string.pref_lanquage), null);
         if (null == lang){
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString(Constants.LANGUAGE_PREF, Locale.getDefault().getLanguage());
+            editor.putString(getString(R.string.pref_lanquage), Locale.getDefault().getLanguage());
             editor.commit();
         }
 

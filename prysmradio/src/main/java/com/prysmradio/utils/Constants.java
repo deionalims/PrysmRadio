@@ -34,5 +34,4 @@ public class Constants {
     public static final String STREAM_INFO_PREFS = "stream_info_prefs";
     public static final String RADIO_PREF = "radio_pref";
     public static final String PODCAST_EPISODE_PREF = "podcase_episode_pref";
-    public static final String LANGUAGE_PREF = "language_pref";
 }

@@ -12,14 +12,16 @@ public class EpisodeRequest extends RetrofitSpiceRequest<Podcast, PrysmApi> {
     public static String EPISODE_REQUEST = "edpisodeRequest";
 
     private int podcastId;
+    private String language;
 
-    public EpisodeRequest(int pod) {
+    public EpisodeRequest(String lang, int pod) {
         super(Podcast.class, PrysmApi.class);
         podcastId = pod;
+        language = lang;
     }
 
     @Override
     public Podcast loadDataFromNetwork() throws Exception {
-        return getService().getPodcast(podcastId);
+        return getService().getPodcast(language, podcastId);
     }
 }

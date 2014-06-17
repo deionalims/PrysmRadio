@@ -14,10 +14,9 @@ import retrofit.http.Query;
  */
 public interface PrysmApi {
 
-    //static final String API = "/bomgmt/api";
     static final String RADIOS = "/radios";
     static final String RADIO = "/radio";
-    static final String PODCAST = "/podcast/fr";
+    static final String PODCAST = "/podcast";
     static final String CURRENT = "/current";
     static final String NEWS = "/news";
     static final String LAST = "/last";
@@ -34,11 +33,11 @@ public interface PrysmApi {
     @GET(LAST + "/{id}")
     CurrentTrackInfo.List getTrackHistory(@Path("id") int id, @Query("limit") int limit);
 
-    @GET(PODCAST)
-    Podcast.List getPodcasts();
+    @GET(PODCAST + "/{language}")
+    Podcast.List getPodcasts(@Path("language") String language);
 
-    @GET(PODCAST + "/{id}")
-    Podcast getPodcast(@Path("id") int id);
+    @GET(PODCAST + "/{language}" + "/{id}")
+    Podcast getPodcast(@Path("language") String language, @Path("id") int id);
 
     @GET(NEWS + "/{language}")
     News.List getNews(@Path("language") String language, @Query("limit") String limit);

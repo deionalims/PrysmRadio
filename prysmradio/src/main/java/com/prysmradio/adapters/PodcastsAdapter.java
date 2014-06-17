@@ -24,7 +24,7 @@ public class PodcastsAdapter extends PrysmListAdapter<Podcast> {
             viewHolder.subtitle.setText(podcast.getInfos().getSubtitle());
             viewHolder.optionalInfo.setText(String.format(context.getString(R.string.number_episodes), podcast.getEpisodeNum()));
 
-            ImageLoader.getInstance().displayImage(podcast.getInfos().getCover(), viewHolder.thumb);
+            ImageLoader.getInstance().displayImage(podcast.getInfos().getCover().getCover200x200(), viewHolder.thumb);
         }
 
     }

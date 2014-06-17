@@ -16,7 +16,6 @@ import com.prysmradio.R;
 import com.prysmradio.activities.BaseActivity;
 import com.prysmradio.api.requests.NewsDetailsRequest;
 import com.prysmradio.objects.News;
-import com.prysmradio.utils.Constants;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -42,7 +41,7 @@ public class NewsFragment extends PrysmFragment implements RequestListener<News>
         newsWebView.getSettings().setJavaScriptEnabled(true);
         newsWebView.setWebViewClient(new WebViewClient());
 
-        String lang = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(Constants.LANGUAGE_PREF, null);
+        String lang = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(getString(R.string.pref_lanquage), null);
 
         NewsDetailsRequest request = new NewsDetailsRequest(newsId, lang);
         getSpiceManager().execute(request, this);

@@ -22,6 +22,8 @@ import com.prysmradio.utils.Constants;
  */
 public abstract class PrysmAudioService extends Service implements AudioManager.OnAudioFocusChangeListener {
 
+    private static String KEY_NO_CONNECTIVITY = "noConnectivity";
+
     public enum STATE {
         PLAYING, PREPARING, SHOULD_LOAD_URL, SHOULD_QUIT, STOPPED
     }
@@ -32,6 +34,7 @@ public abstract class PrysmAudioService extends Service implements AudioManager.
     protected STATE state;
     protected Handler runOnUiThreadHandler;
     protected int currentVolume;
+    private ConnectivityChangeReceiver connectivityChangeReceiver;
 
     @Override
     public void onCreate() {
@@ -42,8 +45,10 @@ public abstract class PrysmAudioService extends Service implements AudioManager.
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         runOnUiThreadHandler = new Handler();
 
+        connectivityChangeReceiver = new ConnectivityChangeReceiver();
+
 //        registerReceiver(
-//        new ConnectivityChangeReceiver(),
+//        connectivityChangeReceiver,
 //        new IntentFilter(
 //                ConnectivityManager.CONNECTIVITY_ACTION));
 
@@ -54,6 +59,8 @@ public abstract class PrysmAudioService extends Service implements AudioManager.
     @Override
     public void onDestroy() {
         ((PrysmApplication) getApplicationContext()).setServiceIsRunning(false);
+
+//        unregisterReceiver(connectivityChangeReceiver);
 
         BusManager.getInstance().getBus().unregister(this);
     }
@@ -157,23 +164,26 @@ public abstract class PrysmAudioService extends Service implements AudioManager.
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            debugIntent(intent, "MICHEL");
-        }
-
-        private void debugIntent(Intent intent, String tag) {
-            Log.v(tag, "action: " + intent.getAction());
-            Log.v(tag, "component: " + intent.getComponent());
+            Log.v("MICHEL", "action: " + intent.getAction());
+            Log.v("MICHEL", "component: " + intent.getComponent());
             Bundle extras = intent.getExtras();
             if (extras != null) {
+                if (extras.containsKey(KEY_NO_CONNECTIVITY) && extras.getBoolean(KEY_NO_CONNECTIVITY, false)){
+                    pauseMusic();
+                } else {
+                    resumeMusic();
+                    state = STATE.PLAYING;
+                }
                 for (String key: extras.keySet()) {
-                    Log.v(tag, "key [" + key + "]: " +
+                    Log.v("MICHEL", "key [" + key + "]: " +
                             extras.get(key));
                 }
             }
             else {
-                Log.v(tag, "no extras");
+                Log.v("MICHEL", "no extras");
             }
         }
+
 
     }
 }

@@ -15,6 +15,7 @@ public class TrackCovers implements Serializable {
     @SerializedName("200") private String cover200x200;
     @SerializedName("400") private String cover400x400;
     @SerializedName("600") private String cover600x600;
+    @SerializedName("1400") private String cover1400x1400;
 
 
     public String getCover30x30() {
@@ -63,5 +64,13 @@ public class TrackCovers implements Serializable {
 
     public void setCover600x600(String cover600x600) {
         this.cover600x600 = cover600x600;
+    }
+
+    public String getCover1400x1400() {
+        return cover1400x1400;
+    }
+
+    public void setCover1400x1400(String cover1400x1400) {
+        this.cover1400x1400 = cover1400x1400;
     }
 }

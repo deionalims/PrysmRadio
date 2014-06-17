@@ -10,7 +10,7 @@ public class PodcastInfo implements Serializable {
     private String subtitle;
     private String summary;
     private String description;
-    private String cover;
+    private TrackCovers cover;
     private String author;
     private String copyright;
 
@@ -38,11 +38,11 @@ public class PodcastInfo implements Serializable {
         this.description = description;
     }
 
-    public String getCover() {
+    public TrackCovers getCover() {
         return cover;
     }
 
-    public void setCover(String cover) {
+    public void setCover(TrackCovers cover) {
         this.cover = cover;
     }
 

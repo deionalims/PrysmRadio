@@ -2,13 +2,12 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
-        android:key="pref_auto_play"
+        android:key="@string/pref_auto_play"
         android:title="@string/pref_auto_play"
         android:summary="@string/pref_auto_play_summ"
         android:defaultValue="false" />
     <ListPreference
-        android:dependency="pref_sync"
-        android:key="pref_language"
+        android:key="@string/pref_lanquage"
         android:title="@string/pref_lanquage"
         android:dialogTitle="@string/pref_lanquage"
         android:entries="@array/pref_languages_entries"
