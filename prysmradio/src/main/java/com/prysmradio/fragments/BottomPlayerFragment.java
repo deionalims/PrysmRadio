@@ -149,6 +149,9 @@ public class BottomPlayerFragment extends PrysmFragment implements RequestListen
         if (currentTrackInfo != null) {
             artistTextView.setText(currentTrackInfo.getArtist());
             titleTextView.setText(currentTrackInfo.getTitle());
+            CurrentStreamInfo.getInstance().getCurrentRadio().setArtist(currentTrackInfo.getArtist());
+            CurrentStreamInfo.getInstance().getCurrentRadio().setTitle(currentTrackInfo.getTitle());
+            CurrentStreamInfo.getInstance().getCurrentRadio().setSongCover(currentTrackInfo.getCover().getCover200x200());
             BusManager.getInstance().getBus().post(new UpdateCurrentTrackInfoEvent(currentTrackInfo));
             ((PrysmApplication) getActivity().getApplication()).getNotificationHandler().updateNotification(currentTrackInfo.getCover().getCover100x100(), currentTrackInfo.getArtist(), currentTrackInfo.getTitle());
         }

@@ -11,12 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
-import com.facebook.widget.FacebookDialog;
 import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
 import com.prysmradio.adapters.MainPagerAdapter;
 import com.prysmradio.fragments.BottomPlayerFragment;
 import com.prysmradio.utils.Constants;
+import com.prysmradio.utils.CurrentStreamInfo;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -59,10 +59,14 @@ public class MainActivity extends PrysmActivity implements ActionBar.TabListener
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private Intent getDefaultIntent() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("image/*");
+        return intent;
     }
 
     @Override
@@ -77,13 +81,19 @@ public class MainActivity extends PrysmActivity implements ActionBar.TabListener
             return true;
         }
 
-        if (id == R.id.action_share){
-
-            FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(this)
-                    .setLink("http://www.prysmradio.com/")
-                    .setApplicationName("Prysm Radio France")
-                    .build();
-            uiHelper.trackPendingDialogCall(shareDialog.present());
+        switch (id){
+            case R.id.facebook:
+                if (((PrysmApplication) getApplication()).isServiceIsRunning()){
+                  if (CurrentStreamInfo.getInstance().getCurrentRadio() != null){
+                      shareFacebookPlayingRadio();
+                  }
+                } else {
+                    shareFacebookNonPlayingRadio();
+                }
+                break;
+            case R.id.twitter:
+                shareTwitterListeningRadio();
+                break;
         }
 
         return super.onOptionsItemSelected(item);

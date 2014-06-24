@@ -22,7 +22,6 @@ public class NewsDetailsRequest extends RetrofitSpiceRequest<News, PrysmApi> {
 
     @Override
     public News loadDataFromNetwork() throws Exception {
-
-        return getService().getNews(lang, newsId);
+        return getService().getNews(newsId);
     }
 }

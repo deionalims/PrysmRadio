@@ -11,7 +11,7 @@ public class PodcastEpisode implements Serializable{
     private String title;
     private String subtitle;
     private String summary;
-    private String cover;
+    private TrackCovers cover;
     private String audioUrl;
     private String audioType;
     private long duration;
@@ -51,11 +51,11 @@ public class PodcastEpisode implements Serializable{
         this.summary = summary;
     }
 
-    public String getCover() {
+    public TrackCovers getCover() {
         return cover;
     }
 
-    public void setCover(String cover) {
+    public void setCover(TrackCovers cover) {
         this.cover = cover;
     }
 

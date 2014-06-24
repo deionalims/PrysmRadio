@@ -22,6 +22,6 @@ public class EpisodeRequest extends RetrofitSpiceRequest<Podcast, PrysmApi> {
 
     @Override
     public Podcast loadDataFromNetwork() throws Exception {
-        return getService().getPodcast(language, podcastId);
+        return getService().getPodcast(podcastId);
     }
 }

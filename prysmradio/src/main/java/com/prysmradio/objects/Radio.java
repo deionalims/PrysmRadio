@@ -16,6 +16,9 @@ public class Radio implements Serializable {
     private String description;
     private TrackCovers cover;
     private ArrayList<Stream> stream;
+    private String title;
+    private String artist;
+    private String songCover;
 
     public int getId() {
         return id;
@@ -75,6 +78,30 @@ public class Radio implements Serializable {
         }
 
         return null;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public String getSongCover() {
+        return songCover;
+    }
+
+    public void setSongCover(String songCover) {
+        this.songCover = songCover;
     }
 
     @SuppressWarnings("serial")

@@ -10,15 +10,13 @@ import com.prysmradio.objects.Podcast;
 public class PodcastsRequest extends RetrofitSpiceRequest<Podcast.List, PrysmApi> {
 
     public static final String PODCAST_REQUEST = "podcastRequest";
-    private String language;
 
-    public PodcastsRequest(String lang) {
+    public PodcastsRequest() {
         super(Podcast.List.class, PrysmApi.class);
-        language = lang;
     }
 
     @Override
     public Podcast.List loadDataFromNetwork() throws Exception {
-        return getService().getPodcasts(language);
+        return getService().getPodcasts();
     }
 }

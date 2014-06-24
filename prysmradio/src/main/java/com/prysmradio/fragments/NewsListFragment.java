@@ -2,7 +2,6 @@ package com.prysmradio.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
-import com.prysmradio.R;
 import com.prysmradio.activities.NewsActivity;
 import com.prysmradio.adapters.NewsAdapter;
 import com.prysmradio.api.requests.NewsRequest;
@@ -34,9 +32,7 @@ public class NewsListFragment extends PrysmListFragment<News> implements Request
         adapter = new NewsAdapter(getActivity());
         listView.setAdapter(adapter);
 
-        String lang = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(getString(R.string.pref_lanquage), null);
-
-        NewsRequest request = new NewsRequest(0, lang);
+        NewsRequest request = new NewsRequest(0);
         getSpiceManager().execute(request, NewsRequest.NEWS_REQUEST, DurationInMillis.ONE_MINUTE, this);
     }
 

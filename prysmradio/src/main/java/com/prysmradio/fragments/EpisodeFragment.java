@@ -75,7 +75,7 @@ public class EpisodeFragment extends PrysmFragment implements SeekBar.OnSeekBarC
             summaryTextView.setText(episode.getSummary());
             nowPlayingTitleTextView.setText(episode.getTitle());
             nowPlayingSubtitleTextView.setText(episode.getSubtitle());
-            ImageLoader.getInstance().displayImage(episode.getCover(), coverImageView);
+            ImageLoader.getInstance().displayImage(episode.getCover().getCover600x600(), coverImageView);
             seekBar.setMax((int)episode.getDuration());
             totalTimeTextView.setText(
                     String.format("%02d:%02d",

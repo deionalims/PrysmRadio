@@ -14,10 +14,20 @@
     <string name="title">Titre: %s</string>
     <string name="artist">Artiste: %s</string>
 
-    <string name="now_playing">NOW PLAYING</string>
-    <string name="last_played">LAST PLAYED</string>
+    <string name="now_playing">EN CE MOMENT</string>
+    <string name="last_played">DERNIERS JOUÉS</string>
     <string name="number_episodes">%d episodes</string>
 
     <string name="by_author">par %s</string>
 
+    <string name="pref_auto_play">Lancement automatique</string>
+    <string name="pref_auto_play_summ">Lancement automatique de la radio au demarrage de l\'application</string>
+
+    <string name="facebook_share_name" formatted="false">Now Playing :  %s - %s on Prysm Radio</string>
+    <string name="facebook_share_description"> Prysm Radio, la première radio 100% numérique consacrée à la musique électronique, à la culture clubbing et aux DJ\'s</string>
+    <string name="facebook_share_caption">www.prysmradio.co.uk</string>
+    <string name="facebook_share_link">http://www.prysmradio.com/</string>
+
+    <string name="twitter_share_text">Toute l\'actualité de la #musiqueelectronique est sur @PrysmRadio #EDM #DJ #Clubbing #Culture #News</string>
+    <string name="twitter_share_url">www.prysmradio.com</string>
 </resources>

@@ -16,7 +16,6 @@
     <string name="title">Title: %s</string>
     <string name="artist">Artist: %s</string>
 
-
     <string name="now_playing">NOW PLAYING</string>
     <string name="last_played">LAST PLAYED</string>
     <string name="number_episodes">%d episodes</string>

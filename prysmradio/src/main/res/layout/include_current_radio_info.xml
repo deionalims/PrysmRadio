@@ -12,7 +12,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:src="@drawable/prysm_logo_square"
+        android:src="@drawable/ic_prysm_logo_square"
         android:scaleType="centerInside"
         android:layout_marginRight="10dp"/>
 

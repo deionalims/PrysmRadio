@@ -105,7 +105,7 @@ public class PodcastPlayerService extends PrysmAudioService implements MediaPlay
 
         PodcastEpisode episode = CurrentStreamInfo.getInstance().getPodcastEpisode();
 
-        startForeground(Constants.NOTIFICATION_ID, ((PrysmApplication) getApplicationContext()).getNotificationHandler().getNotification(episode.getCover(), episode.getTitle(), episode.getSubtitle()));
+        startForeground(Constants.NOTIFICATION_ID, ((PrysmApplication) getApplicationContext()).getNotificationHandler().getNotification(episode.getCover().getCover100x100(), episode.getTitle(), episode.getSubtitle()));
 
         int result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC,
                 AudioManager.AUDIOFOCUS_GAIN);

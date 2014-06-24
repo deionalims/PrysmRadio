@@ -13,10 +13,10 @@
         android:id="@+id/radio_imageView"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/prysm_logo_square"
+        android:src="@drawable/ic_prysm_logo_square"
         android:layout_marginRight="20dp"
         android:layout_gravity="center"
-        android:scaleType="centerInside"/>
+        android:scaleType="fitCenter"/>
 
     <LinearLayout
         android:layout_width="0dp"

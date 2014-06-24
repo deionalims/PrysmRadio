@@ -1,7 +1,6 @@
 package com.prysmradio.fragments;
 
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,11 +32,8 @@ public class PodcastsListFragment extends PrysmListFragment<Podcast> implements 
         adapter = new PodcastsAdapter(getActivity());
         listView.setAdapter(adapter);
 
-        String lang = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(getString(R.string.pref_lanquage), null);
-
-        PodcastsRequest request = new PodcastsRequest(lang);
+        PodcastsRequest request = new PodcastsRequest();
         getSpiceManager().execute(request, PodcastsRequest.PODCAST_REQUEST, DurationInMillis.ONE_MINUTE, this);
-
     }
 
     @Override

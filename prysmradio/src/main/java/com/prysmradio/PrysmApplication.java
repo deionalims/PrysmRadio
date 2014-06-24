@@ -36,7 +36,7 @@ public class PrysmApplication extends Application {
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
                 .cacheOnDisc(true)
-                .showImageOnLoading(R.drawable.prysm_logo_square)
+                .showImageOnLoading(R.drawable.ic_prysm_logo_square)
                 .displayer(new FadeInBitmapDisplayer(300))
                 .build();
 

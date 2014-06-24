@@ -6,11 +6,11 @@
         android:title="@string/pref_auto_play"
         android:summary="@string/pref_auto_play_summ"
         android:defaultValue="false" />
-    <ListPreference
-        android:key="@string/pref_lanquage"
-        android:title="@string/pref_lanquage"
-        android:dialogTitle="@string/pref_lanquage"
-        android:entries="@array/pref_languages_entries"
-        android:entryValues="@array/pref_languages_values"
-        android:defaultValue="@string/pref_languages_default" />
+    <!--<ListPreference-->
+        <!--android:key="@string/pref_lanquage"-->
+        <!--android:title="@string/pref_lanquage"-->
+        <!--android:dialogTitle="@string/pref_lanquage"-->
+        <!--android:entries="@array/pref_languages_entries"-->
+        <!--android:entryValues="@array/pref_languages_values"-->
+        <!--android:defaultValue="@string/pref_languages_default" />-->
 </PreferenceScreen>
