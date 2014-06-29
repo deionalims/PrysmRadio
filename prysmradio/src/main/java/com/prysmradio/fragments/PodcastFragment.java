@@ -63,7 +63,7 @@ public class PodcastFragment extends PrysmListFragment<PodcastEpisode> implement
         Intent podcastIntent = new Intent(getActivity(), PlayerActivity.class);
         podcastIntent.putExtra(Constants.EPISODE_EXTRA, episode);
         podcastIntent.putExtra(Constants.LOADING_EXTRA, true);
-        getActivity().startActivity(podcastIntent);
+        getActivity().startActivityForResult(podcastIntent, Constants.METADATA_REQUEST_CODE);
     }
 
     @Override

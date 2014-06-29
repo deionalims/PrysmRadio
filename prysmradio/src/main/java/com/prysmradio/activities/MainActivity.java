@@ -1,7 +1,9 @@
 package com.prysmradio.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -16,7 +18,6 @@ import com.prysmradio.R;
 import com.prysmradio.adapters.MainPagerAdapter;
 import com.prysmradio.fragments.BottomPlayerFragment;
 import com.prysmradio.utils.Constants;
-import com.prysmradio.utils.CurrentStreamInfo;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -53,6 +54,11 @@ public class MainActivity extends PrysmActivity implements ActionBar.TabListener
                 getSupportActionBar().setSelectedNavigationItem(position);
             }
         });
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (prefs.getBoolean(getString(R.string.pref_auto_play), false)){
+            startStopAudioService();
+        }
     }
 
 
@@ -71,31 +77,6 @@ public class MainActivity extends PrysmActivity implements ActionBar.TabListener
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, PrysmSettingsActivity.class);
-            startActivity(intent);
-            return true;
-        }
-
-        switch (id){
-            case R.id.facebook:
-                if (((PrysmApplication) getApplication()).isServiceIsRunning()){
-                  if (CurrentStreamInfo.getInstance().getCurrentRadio() != null){
-                      shareFacebookPlayingRadio();
-                  }
-                } else {
-                    shareFacebookNonPlayingRadio();
-                }
-                break;
-            case R.id.twitter:
-                shareTwitterListeningRadio();
-                break;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 

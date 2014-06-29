@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.view.MenuItem;
 
 import com.facebook.widget.FacebookDialog;
 import com.google.gson.Gson;
@@ -32,14 +33,11 @@ public class PrysmActivity extends BaseActivity {
     @Subscribe
     public void onUpdatePlayerEventReceived(UpdatePlayerEvent event){
         if (event.isBuffering()){
-            ((PrysmApplication) getApplicationContext()).setServiceIsRunning(true);
             setProgressBarIndeterminateVisibility(true);
         } else if (event.isPlaying()){
-            ((PrysmApplication) getApplicationContext()).setServiceIsRunning(true);
             setProgressBarIndeterminateVisibility(false);
         } else {
             setProgressBarIndeterminateVisibility(false);
-            ((PrysmApplication) getApplicationContext()).setServiceIsRunning(false);
             BusManager.getInstance().getBus().post(new UpdateCoverEvent(null));
         }
     }
@@ -63,8 +61,6 @@ public class PrysmActivity extends BaseActivity {
 
     public void startStopAudioService() {
         if (!((PrysmApplication) getApplicationContext()).isServiceIsRunning()){
-            ((PrysmApplication) getApplicationContext()).setServiceIsRunning(true);
-
             if (CurrentStreamInfo.getInstance().getCurrentRadio() != null){
                 Intent intent = new Intent(Constants.START_RADIO_SERVICE_ACTION);
                 intent.putExtra(Constants.AUDIO_URL_EXTRA, CurrentStreamInfo.getInstance().getCurrentRadio().getAACStreamURL());
@@ -76,7 +72,6 @@ public class PrysmActivity extends BaseActivity {
                 startService(new Intent(intent));
             }
         } else {
-            ((PrysmApplication) getApplicationContext()).setServiceIsRunning(false);
             if (CurrentStreamInfo.getInstance().getCurrentRadio() != null){
                 startService(new Intent(Constants.STOP_RADIO_SERVICE_ACTION));
                 saveCurrentRadio();
@@ -132,7 +127,7 @@ public class PrysmActivity extends BaseActivity {
         uiHelper.trackPendingDialogCall(shareDialog.present());
     }
 
-    protected void shareTwitterListeningRadio(){
+    protected void shareTwitterNonListeningRadio(){
 
             String tweetUrl =
                     String.format("https://twitter.com/intent/tweet?text=%s&url=%s",
@@ -148,4 +143,60 @@ public class PrysmActivity extends BaseActivity {
 
             startActivity(intent);
     }
+
+    protected void shareTwitterListeningRadio(){
+
+        String tweetUrl =
+                String.format("https://twitter.com/intent/tweet?text=%s&url=%s",
+                        Utils.urlEncode(String.format(getString(R.string.facebook_share_name), CurrentStreamInfo.getInstance().getCurrentRadio().getArtist(), CurrentStreamInfo.getInstance().getCurrentRadio().getTitle())), Utils.urlEncode(getString(R.string.twitter_share_url)));
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tweetUrl));
+
+        List<ResolveInfo> matches = getPackageManager().queryIntentActivities(intent, 0);
+        for (ResolveInfo info : matches) {
+            if (info.activityInfo.packageName.toLowerCase().startsWith("com.twitter")) {
+                intent.setPackage(info.activityInfo.packageName);
+            }
+        }
+
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, PrysmSettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        switch (id){
+            case R.id.facebook:
+                if (((PrysmApplication) getApplication()).isServiceIsRunning()){
+                    if (CurrentStreamInfo.getInstance().getCurrentRadio() != null){
+                        shareFacebookPlayingRadio();
+                    }
+                } else {
+                    shareFacebookNonPlayingRadio();
+                }
+                break;
+            case R.id.twitter:
+                if (((PrysmApplication) getApplication()).isServiceIsRunning()){
+                    if (CurrentStreamInfo.getInstance().getCurrentRadio() != null){
+                        shareTwitterListeningRadio();
+                    }
+                } else {
+                    shareTwitterNonListeningRadio();
+                }
+
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }

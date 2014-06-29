@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.Window;
 
+import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
 import com.prysmradio.fragments.BottomPlayerFragment;
 import com.prysmradio.fragments.EpisodeFragment;
@@ -52,15 +55,29 @@ public class PlayerActivity extends PrysmActivity {
                     .add(R.id.player_container, fragment)
                     .commit();
         }
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onBackPressed() {
         Intent returnIntent = new Intent();
-        returnIntent.putExtra(Constants.STREAM_TITLE_EXTRA, bottomPlayerFragment.getStreamTitle());
-        returnIntent.putExtra(Constants.STREAM_ARTIST_EXTRA, bottomPlayerFragment.getStreamArtist());
-        setResult(RESULT_OK, returnIntent);
+        if (((PrysmApplication) getApplication()).isServiceIsRunning()){
+            returnIntent.putExtra(Constants.STREAM_TITLE_EXTRA, bottomPlayerFragment.getStreamTitle());
+            returnIntent.putExtra(Constants.STREAM_ARTIST_EXTRA, bottomPlayerFragment.getStreamArtist());
+            setResult(RESULT_OK, returnIntent);
+        } else {
+            setResult(RESULT_CANCELED);
+        }
         finish();
     }
 }

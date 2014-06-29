@@ -10,6 +10,9 @@ import com.facebook.widget.FacebookDialog;
 import com.octo.android.robospice.SpiceManager;
 import com.prysmradio.services.PrysmRetrofitSpiceService;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
+
 /**
  * Created by fxoxe_000 on 12/05/2014.
  */
@@ -82,5 +85,9 @@ public class BaseActivity extends ActionBarActivity {
 
     public SpiceManager getSpiceManager() {
         return spiceManager;
+    }
+
+    protected void showError(String error){
+        Crouton.showText(this, error, Style.ALERT, null);
     }
 }

@@ -80,6 +80,8 @@ public abstract class PrysmAudioService extends Service implements AudioManager.
             }
         });
 
+        ((PrysmApplication) getApplication()).setServiceIsRunning(true);
+
         startForeground(Constants.NOTIFICATION_ID, ((PrysmApplication) getApplicationContext()).getNotificationHandler().getNotification());
     }
 
@@ -98,7 +100,7 @@ public abstract class PrysmAudioService extends Service implements AudioManager.
 
         stopForeground(true);
         audioManager.abandonAudioFocus(this);
-        Log.v("MICHEL", "STOPPING " + serviceID);
+        ((PrysmApplication) getApplication()).setServiceIsRunning(false);
         stopSelf(serviceID);
     }
 
