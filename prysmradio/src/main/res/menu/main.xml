@@ -16,14 +16,14 @@
             <item
                 android:id="@+id/facebook"
                 android:orderInCategory="1"
-                android:showAsAction="never"
+                app:showAsAction="never"
                 android:icon="@drawable/ic_fb_f_logo__blue_29"
                 android:title="Facebook">
             </item>
             <item
                 android:id="@+id/twitter"
                 android:orderInCategory="2"
-                android:showAsAction="never"
+                app:showAsAction="never"
                 android:icon="@drawable/ic_twitter_icon"
                 android:title="Twitter">
             </item>
