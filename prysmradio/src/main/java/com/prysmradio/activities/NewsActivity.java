@@ -5,6 +5,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.facebook.widget.FacebookDialog;
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -36,6 +38,8 @@ public class NewsActivity extends BaseActivity implements RequestListener<News> 
     ProgressBar newsProgressBar;
     @InjectView(R.id.news_webView)
     WebView newsWebView;
+    @InjectView(R.id.content_news_textView)
+    TextView contentNewsTextView;
 
     private News news;
 
@@ -68,7 +72,8 @@ public class NewsActivity extends BaseActivity implements RequestListener<News> 
     public void onRequestSuccess(News news) {
         newsProgressBar.setVisibility(View.GONE);
         this.news = news;
-        newsWebView.loadUrl(news.getGuid());
+        //newsWebView.loadUrl(news.getGuid());
+        contentNewsTextView.setText(Html.fromHtml(news.getContent()));
     }
 
     @Override

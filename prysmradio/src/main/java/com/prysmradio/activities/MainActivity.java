@@ -46,7 +46,7 @@ public class MainActivity extends PrysmActivity implements ActionBar.TabListener
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.addTab(actionBar.newTab().setText(getString(R.string.tab_radio)).setTabListener(this));
         actionBar.addTab(actionBar.newTab().setText(getString(R.string.tab_podcasts)).setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText(getString(R.string.tab_prysmradio)).setTabListener(this));
+        //actionBar.addTab(actionBar.newTab().setText(getString(R.string.tab_prysmradio)).setTabListener(this));
 
         mainViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
             @Override

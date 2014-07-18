@@ -20,7 +20,7 @@ public interface PrysmApi {
     static final String CURRENT = "/current";
     static final String NEWS = "/news";
     static final String LAST = "/last";
-    static final String FR = "/fr";
+    static final String LANGUAGE = "/fr";
 
     @GET(RADIOS)
     Radio.List getRadios();
@@ -34,15 +34,15 @@ public interface PrysmApi {
     @GET(LAST + "/{id}")
     CurrentTrackInfo.List getTrackHistory(@Path("id") int id, @Query("limit") int limit);
 
-    @GET(PODCAST + FR)
+    @GET(PODCAST + LANGUAGE)
     Podcast.List getPodcasts();
 
-    @GET(PODCAST + FR + "/{id}")
+    @GET(PODCAST + LANGUAGE + "/{id}")
     Podcast getPodcast(@Path("id") int id);
 
-    @GET(NEWS + FR)
+    @GET(NEWS + LANGUAGE)
     News.List getNews(@Query("limit") String limit);
 
-    @GET(NEWS + FR + "/{id}")
+    @GET(NEWS + LANGUAGE + "/{id}")
     News getNews(@Path("id") int newsId);
 }

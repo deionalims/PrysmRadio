@@ -29,6 +29,20 @@ android {
         }
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
+    productFlavors {
+        flavorFR {
+            packageName "com.prysmradio"
+        }
+
+        flavorUK {
+            packageName "uk.co.prysmradio"
+        }
+    }
+
     buildTypes {
 
         debug {

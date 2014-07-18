@@ -29,4 +29,12 @@
 
     <string name="action_share">share</string>
 
+    <string name="facebook_share_name" formatted="false">Now Playing :  %s - %s on Prysm Radio</string>
+    <string name="facebook_share_description">Prysm Radio, the #1 Digital Radio dedicated to the EDM, Clubbing Culture &amp; DJs</string>
+    <string name="facebook_share_caption">www.prysmradio.com</string>
+    <string name="facebook_share_link">http://www.prysmradio.com/</string>
+
+    <string name="twitter_share_text">Catch latest news of #EDM on @PrysmRadio #DJ #Culture #Clubbing #News</string>
+    <string name="twitter_share_url">www.prysmradio.com</string>
+
 </resources>
