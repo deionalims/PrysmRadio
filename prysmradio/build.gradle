@@ -73,5 +73,8 @@ dependencies {
     compile 'de.keyboardsurfer.android.widget:crouton:1.8.+'
     compile 'com.octo.android.robospice:robospice-retrofit:1.4.12'
     compile files('libs/aacdecoder-android-0.8.jar')
+    compile 'com.squareup.picasso:picasso:2.3.3'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.daimajia.slider:library:1.0.9@aar'
     compile project(':facebook')
 }

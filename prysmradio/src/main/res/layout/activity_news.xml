@@ -1,32 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/content_news_textView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        <LinearLayout
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:padding="5dp"
+            android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/news_progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/news_image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center"/>
 
-        <WebView
-            android:id="@+id/news_webView"
-            android:layout_margin="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"/>
+            <TextView
+                android:id="@+id/news_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Para One et les années 90"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"/>
 
-    </FrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
 
-</LinearLayout>
+                <TextView
+                    android:id="@+id/news_author"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    tools:text="par Juliette Leigniel"/>
+
+                <TextView
+                    android:id="@+id/news_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    tools:text="juil. 26, 2014"
+                    android:layout_weight="1"
+                    android:textColor="@color/tab_selected_color"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/news_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                tools:text="La vague 90's continue de nous surfer allègrement dessus. Cette fois c'est Para One, le (co)patron du label Marble qui s'y colle. Le français, qui vient de sortir son (excellent) album CLUB, est de retour avec un mix. Un mixe de 90 minutes, obviously, hommage aux années 90 qui s'appellent justement 90's of 90's. Une heure et demi de kiff dans les allées éclairées de la mémoire."/>
+
+
+            <com.daimajia.slider.library.SliderLayout
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:id="@+id/slider"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/news_progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+</FrameLayout>

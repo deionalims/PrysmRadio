@@ -29,9 +29,14 @@ public class Constants {
     public static final String RADIO_EXTRA = "radio_extra";
     public static final String NEWS_EXTRA = "news_extra";
     public static final String STOP_EXTRA = "stop_extra";
+    public static final String POSITION_EXTRA = "position_extra";
 
     // PREFERENCES
     public static final String STREAM_INFO_PREFS = "stream_info_prefs";
     public static final String RADIO_PREF = "radio_pref";
     public static final String PODCAST_EPISODE_PREF = "podcase_episode_pref";
+
+    // DATES
+    public static final String API_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String APP_DATE_FORMAT = "MMM dd, yyyy";
 }

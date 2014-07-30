@@ -10,20 +10,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.facebook.widget.FacebookDialog;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 import com.prysmradio.R;
 import com.prysmradio.api.requests.NewsDetailsRequest;
 import com.prysmradio.objects.News;
+import com.prysmradio.objects.NewsAttachment;
 import com.prysmradio.utils.Constants;
 import com.prysmradio.utils.Utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -32,14 +39,17 @@ import butterknife.InjectView;
 /**
  * Created by fxoxe_000 on 12/05/2014.
  */
-public class NewsActivity extends BaseActivity implements RequestListener<News> {
+public class NewsActivity extends BaseActivity implements RequestListener<News>, BaseSliderView.OnSliderClickListener {
 
-    @InjectView(R.id.news_progressBar)
-    ProgressBar newsProgressBar;
-    @InjectView(R.id.news_webView)
-    WebView newsWebView;
-    @InjectView(R.id.content_news_textView)
-    TextView contentNewsTextView;
+    private static String POSITION = "position";
+
+    @InjectView(R.id.news_progressBar) ProgressBar newsProgressBar;
+    @InjectView(R.id.news_image) ImageView newsImage;
+    @InjectView(R.id.news_title) TextView newsTitle;
+    @InjectView(R.id.news_author) TextView newsAuthor;
+    @InjectView(R.id.news_date) TextView newsDate;
+    @InjectView(R.id.news_content) TextView newsContent;
+    @InjectView(R.id.slider) SliderLayout sliderLayout;
 
     private News news;
 
@@ -53,8 +63,9 @@ public class NewsActivity extends BaseActivity implements RequestListener<News> 
 
         ButterKnife.inject(this);
 
-        newsWebView.getSettings().setJavaScriptEnabled(true);
-        newsWebView.setWebViewClient(new WebViewClient());
+        sliderLayout.setPresetTransformer(SliderLayout.Transformer.Default);
+        sliderLayout.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+
 
         String lang = PreferenceManager.getDefaultSharedPreferences(this).getString(getString(R.string.pref_lanquage), null);
 
@@ -72,8 +83,41 @@ public class NewsActivity extends BaseActivity implements RequestListener<News> 
     public void onRequestSuccess(News news) {
         newsProgressBar.setVisibility(View.GONE);
         this.news = news;
-        //newsWebView.loadUrl(news.getGuid());
-        contentNewsTextView.setText(Html.fromHtml(news.getContent()));
+        setupPage();
+    }
+
+    private void setupPage(){
+        ImageLoader.getInstance().displayImage(news.getImageHeader(), newsImage);
+
+        newsTitle.setText(news.getTitle());
+        newsAuthor.setText(String.format(getString(R.string.by_author), news.getAuthor()));
+        try {
+            SimpleDateFormat format = new SimpleDateFormat(Constants.API_DATE_FORMAT);
+            Date date = format.parse(news.getDate());
+
+            format.applyPattern(Constants.APP_DATE_FORMAT);
+            String dateStr = format.format(date);
+            newsDate.setText(dateStr);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            showError("Date ParseException: " + e.getMessage());
+        }
+
+        newsContent.setText(Html.fromHtml(news.getPseudoHTML()));
+
+        if (news.getAttachment() != null && news.getAttachment().size() > 0){
+            int i = 0;
+            for (NewsAttachment na : news.getAttachment()){
+                DefaultSliderView sliderView = new DefaultSliderView(this);
+                sliderView
+                        .image(na.getMedium())
+                        .setOnSliderClickListener(this);
+                sliderView.getBundle().putInt(POSITION, i);
+                sliderLayout.addSlider(sliderView);
+                i++;
+            }
+            sliderLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -108,7 +152,7 @@ public class NewsActivity extends BaseActivity implements RequestListener<News> 
 
     protected void shareFacebookNews(){
         FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(this)
-                .setLink(news.getGuid())
+                .setLink(news.getUrl())
                 .setApplicationName("Prysm Radio France")
                 .build();
         uiHelper.trackPendingDialogCall(shareDialog.present());
@@ -118,7 +162,7 @@ public class NewsActivity extends BaseActivity implements RequestListener<News> 
 
         String tweetUrl =
                 String.format("https://twitter.com/intent/tweet?text=%s&url=%s",
-                        Utils.urlEncode(news.getTitle()), Utils.urlEncode(news.getGuid()));
+                        Utils.urlEncode(news.getTitle()), Utils.urlEncode(news.getUrl()));
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tweetUrl));
 
         List<ResolveInfo> matches = getPackageManager().queryIntentActivities(intent, 0);
@@ -128,6 +172,14 @@ public class NewsActivity extends BaseActivity implements RequestListener<News> 
             }
         }
 
+        startActivity(intent);
+    }
+
+    @Override
+    public void onSliderClick(BaseSliderView baseSliderView) {
+        Intent intent = new Intent(this, ImageGalleryActivity.class);
+        intent.putExtra(Constants.NEWS_EXTRA, news);
+        intent.putExtra(Constants.POSITION_EXTRA, baseSliderView.getBundle().getInt(POSITION));
         startActivity(intent);
     }
 }

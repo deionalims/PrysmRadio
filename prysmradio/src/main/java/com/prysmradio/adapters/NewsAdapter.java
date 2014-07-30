@@ -6,6 +6,7 @@ import android.view.Gravity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.prysmradio.R;
 import com.prysmradio.objects.News;
+import com.prysmradio.utils.Constants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,9 +16,6 @@ import java.util.Date;
  * Created by fxoxe_000 on 29/04/2014.
  */
 public class NewsAdapter extends PrysmListAdapter<News> {
-
-    private static final String API_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    private static final String APP_DATE_FORMAT = "MMM dd, yyyy";
 
     public NewsAdapter(Activity ctx){
         super(ctx);
@@ -31,10 +29,10 @@ public class NewsAdapter extends PrysmListAdapter<News> {
             viewHolder.title.setText(n.getTitle());
             viewHolder.subtitle.setText(String.format(context.getString(R.string.by_author), n.getAuthor()));
             try {
-                SimpleDateFormat format = new SimpleDateFormat(API_DATE_FORMAT);
+                SimpleDateFormat format = new SimpleDateFormat(Constants.API_DATE_FORMAT);
                 Date date = format.parse(n.getDate());
 
-                format.applyPattern(APP_DATE_FORMAT);
+                format.applyPattern(Constants.APP_DATE_FORMAT);
                 String dateStr = format.format(date);
                 viewHolder.optionalInfo.setText(dateStr);
                 viewHolder.optionalInfo.setGravity(Gravity.RIGHT);
@@ -43,7 +41,7 @@ public class NewsAdapter extends PrysmListAdapter<News> {
                 e.printStackTrace();
             }
 
-            ImageLoader.getInstance().displayImage(n.getThumb(), viewHolder.thumb);
+            ImageLoader.getInstance().displayImage(n.getThumbnail(), viewHolder.thumb);
         }
     }
 
