@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.FacebookDialog;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.octo.android.robospice.SpiceManager;
 import com.prysmradio.services.PrysmRetrofitSpiceService;
 
@@ -75,12 +76,14 @@ public class BaseActivity extends ActionBarActivity {
     protected void onStart() {
         spiceManager.start(this);
         super.onStart();
+        EasyTracker.getInstance(this).activityStart(this);
     }
 
     @Override
     protected void onStop() {
         spiceManager.shouldStop();
         super.onStop();
+        EasyTracker.getInstance(this).activityStop(this);
     }
 
     public SpiceManager getSpiceManager() {

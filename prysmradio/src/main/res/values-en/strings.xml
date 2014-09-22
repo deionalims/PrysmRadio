@@ -11,6 +11,8 @@
     <string name="radio_url">http://streaming.streamonomy.com/prysmradio-aac</string>
     <string name="prysm_url">http://api.prysmradio.com/</string>
 
+    <string name="bloc_add_id">ca-app-pub-1520462847732910/9047371988</string>
+
     <string name="title">Title: %s</string>
     <string name="artist">Artist: %s</string>
 

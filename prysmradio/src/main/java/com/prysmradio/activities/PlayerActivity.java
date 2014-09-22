@@ -7,8 +7,14 @@ import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.FrameLayout;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
 import com.prysmradio.fragments.BottomPlayerFragment;
@@ -17,16 +23,48 @@ import com.prysmradio.fragments.RadioFragment;
 import com.prysmradio.utils.Constants;
 import com.prysmradio.utils.CurrentStreamInfo;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created by fx.oxeda on 07/04/2014.
  */
 public class PlayerActivity extends PrysmActivity {
+
+    @InjectView(R.id.add_layout)
+    FrameLayout addLayout;
+
+    private AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+
+        ButterKnife.inject(this);
+
+        adView = new AdView(this);
+        adView.setAdUnitId(getString(R.string.bloc_add_id));
+        adView.setAdSize(AdSize.BANNER);
+
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                addLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
+        addLayout.addView(adView);
+
+        // Initiez une demande générique.
+        AdRequest adRequest = new AdRequest.Builder()
+                //.addTestDevice("CED04524DB3BDE8671E1806D8B3C2D87")
+                .build();
+
+        // Chargez l'objet adView avec la demande d'annonce.
+        adView.loadAd(adRequest);
 
         setProgressBarIndeterminateVisibility(getIntent().getBooleanExtra(Constants.LOADING_EXTRA, false));
 
