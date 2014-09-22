@@ -45,4 +45,6 @@ public interface PrysmApi {
 
     @GET(NEWS + LANGUAGE + "/{id}")
     News getNews(@Path("id") int newsId);
+
+
 }

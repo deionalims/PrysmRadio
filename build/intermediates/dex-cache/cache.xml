@@ -44,11 +44,11 @@
         revision="19.1.0"
         sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
     <item
-        dex="C:\Users\fxoxe_000\AndroidStudioProjects\PrysmRadio\prysmradio\build\intermediates\pre-dexed\flavorFR\debug\robospice-1.4.12-86b7b5f6fcb7ad290df81452b9876a6d5911de3d.jar"
-        jar="C:\Users\fxoxe_000\.gradle\caches\modules-2\files-2.1\com.octo.android.robospice\robospice\1.4.12\a765a12a6f549c15b583a275c1f25c8cf656c0fb\robospice-1.4.12.jar"
+        dex="C:\Users\fxoxe_000\AndroidStudioProjects\PrysmRadio\prysmradio\build\intermediates\pre-dexed\flavorFR\debug\robospice-cache-1.4.12-827a2093b743c066a9010cb44943e45f143f1197.jar"
+        jar="C:\Users\fxoxe_000\.gradle\caches\modules-2\files-2.1\com.octo.android.robospice\robospice-cache\1.4.12\72acbbe328cc32b67315611f973e8e8149a83cf3\robospice-cache-1.4.12.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="a765a12a6f549c15b583a275c1f25c8cf656c0fb"/>
+        sha1="72acbbe328cc32b67315611f973e8e8149a83cf3"/>
     <item
         dex="C:\Users\fxoxe_000\AndroidStudioProjects\PrysmRadio\prysmradio\build\intermediates\pre-dexed\flavorFR\debug\bolts-412cae2928fa08948a626531f69af6486d10e46c.jar"
         jar="C:\Users\fxoxe_000\AndroidStudioProjects\PrysmRadio\prysmradio\build\intermediates\exploded-aar\PrysmRadio\facebook\unspecified\libs\bolts.jar"
@@ -56,17 +56,23 @@
         revision="19.1.0"
         sha1="1e5ba33c837d05dcca9dc40a0ab458f8599d7aef"/>
     <item
-        dex="C:\Users\fxoxe_000\AndroidStudioProjects\PrysmRadio\prysmradio\build\intermediates\pre-dexed\flavorFR\debug\robospice-cache-1.4.12-827a2093b743c066a9010cb44943e45f143f1197.jar"
-        jar="C:\Users\fxoxe_000\.gradle\caches\modules-2\files-2.1\com.octo.android.robospice\robospice-cache\1.4.12\72acbbe328cc32b67315611f973e8e8149a83cf3\robospice-cache-1.4.12.jar"
+        dex="C:\Users\fxoxe_000\AndroidStudioProjects\PrysmRadio\prysmradio\build\intermediates\pre-dexed\flavorFR\debug\robospice-1.4.12-86b7b5f6fcb7ad290df81452b9876a6d5911de3d.jar"
+        jar="C:\Users\fxoxe_000\.gradle\caches\modules-2\files-2.1\com.octo.android.robospice\robospice\1.4.12\a765a12a6f549c15b583a275c1f25c8cf656c0fb\robospice-1.4.12.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="72acbbe328cc32b67315611f973e8e8149a83cf3"/>
+        sha1="a765a12a6f549c15b583a275c1f25c8cf656c0fb"/>
     <item
         dex="C:\Users\fxoxe_000\AndroidStudioProjects\PrysmRadio\prysmradio\build\intermediates\pre-dexed\flavorFR\debug\universal-image-loader-1.9.1-8f302e55027281d0da2ccd5a7419630c47152c90.jar"
         jar="C:\Users\fxoxe_000\.gradle\caches\modules-2\files-2.1\com.nostra13.universalimageloader\universal-image-loader\1.9.1\296dfb44fbf31397c0306e60cb62e06ca40df07f\universal-image-loader-1.9.1.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="296dfb44fbf31397c0306e60cb62e06ca40df07f"/>
+    <item
+        dex="C:\Users\fxoxe_000\AndroidStudioProjects\PrysmRadio\prysmradio\build\intermediates\pre-dexed\flavorFR\debug\classes-f541a6a47c1d91ec0e539f52bec0e6749f751944.jar"
+        jar="C:\Users\fxoxe_000\AndroidStudioProjects\PrysmRadio\prysmradio\build\intermediates\exploded-aar\com.google.android.gms\play-services\5.2.08\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="1ed7a7a05185651f9af41ad93711cb96b66f331c"/>
     <item
         dex="C:\Users\fxoxe_000\AndroidStudioProjects\PrysmRadio\prysmradio\build\intermediates\pre-dexed\flavorFR\debug\classes-59968758a37d945eb2cbbc752441cb3f086e1021.jar"
         jar="C:\Users\fxoxe_000\AndroidStudioProjects\PrysmRadio\prysmradio\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.0.0\classes.jar"

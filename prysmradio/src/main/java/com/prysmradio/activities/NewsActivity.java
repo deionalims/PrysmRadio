@@ -59,7 +59,7 @@ public class NewsActivity extends BaseActivity implements RequestListener<News>,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
-        int newsId = getIntent().getIntExtra(Constants.NEWS_EXTRA, -1);
+        int newsId = getIntent().getIntExtra(Constants.NEWS_ID_EXTRA, -1);
 
         ButterKnife.inject(this);
 

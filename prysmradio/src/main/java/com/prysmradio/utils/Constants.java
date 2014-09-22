@@ -27,6 +27,7 @@ public class Constants {
     public static final String STREAM_ARTIST_EXTRA = "stream_artist_extra";
     public static final String STREAM_TITLE_EXTRA = "stream_title_extra";
     public static final String RADIO_EXTRA = "radio_extra";
+    public static final String NEWS_ID_EXTRA = "news_id_extra";
     public static final String NEWS_EXTRA = "news_extra";
     public static final String STOP_EXTRA = "stop_extra";
     public static final String POSITION_EXTRA = "position_extra";

@@ -39,6 +39,8 @@
 
         <activity android:name=".activities.ImageGalleryActivity"/>
 
+        <activity android:name=".activities.WordPressActivity"/>
+
         <service android:name=".services.RadioPlayerService"
             android:exported="false">
 
