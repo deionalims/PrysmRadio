@@ -2,6 +2,10 @@ package com.prysmradio.activities;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -9,7 +13,6 @@ import com.prysmradio.R;
 import com.prysmradio.api.requests.NewsDetailsRequest;
 import com.prysmradio.objects.News;
 import com.prysmradio.utils.Constants;
-import com.prysmradio.utils.HTML5WebView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -19,8 +22,7 @@ import butterknife.InjectView;
  */
 public class WordPressActivity extends BaseActivity implements RequestListener<News> {
 
-    @InjectView(R.id.wordpress_webView)
-    HTML5WebView webView;
+    @InjectView(R.id.webview) WebView webView;
     private News news;
 
     @Override
@@ -29,6 +31,12 @@ public class WordPressActivity extends BaseActivity implements RequestListener<N
         setContentView(R.layout.activity_wordpress);
 
         ButterKnife.inject(this);
+
+        webView.setWebChromeClient(new WebChromeClient());
+        webView.getSettings().setPluginState(WebSettings.PluginState.ON);
+        webView.getSettings().setPluginState(WebSettings.PluginState.ON_DEMAND);
+        webView.setWebViewClient(new WebViewClient());
+        webView.getSettings().setJavaScriptEnabled(true);
 
         int newsId = getIntent().getIntExtra(Constants.NEWS_ID_EXTRA, -1);
 
@@ -46,6 +54,8 @@ public class WordPressActivity extends BaseActivity implements RequestListener<N
     @Override
     public void onRequestSuccess(News news) {
         this.news = news;
-        webView.loadData(news.getPseudoHTML(), "text/html", "UTF-8");
+        webView.loadUrl(news.getUrl());
+//        webView.loadDataWithBaseURL(null, news.getContent(),
+//                "text/html; charset=utf-8", "UTF-8", null);
     }
 }

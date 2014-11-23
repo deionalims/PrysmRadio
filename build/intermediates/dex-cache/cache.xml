@@ -2,11 +2,29 @@
 <pre-dex-items>
 
     <item
+        dex="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/pre-dexed/flavorFR/debug/classes-2fe208cd23ebc601c42bf626d2dc87e140915cb4.jar"
+        jar="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/exploded-aar/de.keyboardsurfer.android.widget/crouton/1.8.4/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="ef6e7d100ebc7feca53c3e2445b8e63ce4dea90c"/>
+    <item
+        dex="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/pre-dexed/flavorFR/debug/classes-32928fab8b8e77f816611dc995e1f7c0b5e832ee.jar"
+        jar="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.1.71/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="0f6d5c1ef2e982c3b7858408e3df389cf5d202da"/>
+    <item
         dex="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/pre-dexed/flavorFR/debug/robospice-1.4.12-b0cfd5229cbaf96b27bf94382820e11000abd336.jar"
         jar="/Users/fx.oxeda/.gradle/caches/modules-2/files-2.1/com.octo.android.robospice/robospice/1.4.12/a765a12a6f549c15b583a275c1f25c8cf656c0fb/robospice-1.4.12.jar"
         jumboMode="false"
         revision="20.0.0"
         sha1="a765a12a6f549c15b583a275c1f25c8cf656c0fb"/>
+    <item
+        dex="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/pre-dexed/flavorFR/debug/support-annotations-20.0.0-3d76081876c8a806140b60f8e37a367b22256878.jar"
+        jar="/usr/local/opt/android-sdk/extras/android/m2repository/com/android/support/support-annotations/20.0.0/support-annotations-20.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="9d9013e9ff35fc3756411e62873c363c70c638fa"/>
     <item
         dex="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/pre-dexed/flavorFR/debug/butterknife-4.0.1-f4c769f099bd2c113e52f529076a94c4cb85d677.jar"
         jar="/Users/fx.oxeda/.gradle/caches/modules-2/files-2.1/com.jakewharton/butterknife/4.0.1/f43b36925363701633d01adb8e54df7150397a78/butterknife-4.0.1.jar"
@@ -38,6 +56,12 @@
         revision="20.0.0"
         sha1="c10ec5370368be16fe990157f09d18fbf76196d4"/>
     <item
+        dex="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/pre-dexed/flavorFR/debug/classes-c33e3c4fde5a5d72346d3596e314c8b1944a4e65.jar"
+        jar="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="8694693636ab36910c8100ce527c258ff3ebece0"/>
+    <item
         dex="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/pre-dexed/flavorFR/debug/universal-image-loader-1.9.1-b51f1f0d56995e7900a9010c9151306c3fc36fba.jar"
         jar="/Users/fx.oxeda/.gradle/caches/modules-2/files-2.1/com.nostra13.universalimageloader/universal-image-loader/1.9.1/296dfb44fbf31397c0306e60cb62e06ca40df07f/universal-image-loader-1.9.1.jar"
         jumboMode="false"
@@ -68,12 +92,6 @@
         revision="20.0.0"
         sha1="eb69b5c2e53e59d82f7439f3217f46f9d98f0c89"/>
     <item
-        dex="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/pre-dexed/flavorFR/debug/support-v4-19.1.0-8888576deadad72d34aaf5090eaf4c953af391b5.jar"
-        jar="/usr/local/opt/android-sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
-    <item
         dex="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/pre-dexed/flavorFR/debug/bolts-60b993c305a9cb0efe00aa7a33c9fe6a1e3edf86.jar"
         jar="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/exploded-aar/PrysmRadio/facebook/unspecified/libs/bolts.jar"
         jumboMode="false"
@@ -92,12 +110,6 @@
         revision="20.0.0"
         sha1="a60a5e993c98c864010053cb901b7eab25306568"/>
     <item
-        dex="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/pre-dexed/flavorFR/debug/crouton-1.8.5-82246b1a756cc0ac0b52aa502aacfebb2f1e6e7b.jar"
-        jar="/Users/fx.oxeda/.gradle/caches/modules-2/files-2.1/de.keyboardsurfer.android.widget/crouton/1.8.5/f085933fd4fad9693229d105d6d6d01fa90bb599/crouton-1.8.5.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="f085933fd4fad9693229d105d6d6d01fa90bb599"/>
-    <item
         dex="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/pre-dexed/flavorFR/debug/robospice-cache-1.4.12-4a4636364809a2dd4b807cb4428fd0854a8f968c.jar"
         jar="/Users/fx.oxeda/.gradle/caches/modules-2/files-2.1/com.octo.android.robospice/robospice-cache/1.4.12/72acbbe328cc32b67315611f973e8e8149a83cf3/robospice-cache-1.4.12.jar"
         jumboMode="false"
@@ -110,17 +122,17 @@
         revision="20.0.0"
         sha1="54271c5c7a4dfa1c7cd53d0b10956ea35d32abb0"/>
     <item
-        dex="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/pre-dexed/flavorFR/debug/classes-035ff09efe71d6d28a9b191a4faec1d8c63258bd.jar"
-        jar="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/exploded-aar/com.google.android.gms/play-services/5.2.08/classes.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="1ed7a7a05185651f9af41ad93711cb96b66f331c"/>
-    <item
         dex="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/pre-dexed/flavorFR/debug/libGoogleAnalyticsServices-04e94455f7bfe5152d68e74dceb25b757f97eb9f.jar"
         jar="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/libs/libGoogleAnalyticsServices.jar"
         jumboMode="false"
         revision="20.0.0"
         sha1="db1e65d9e3ee616f871cb23120fbea8f18ad3e4c"/>
+    <item
+        dex="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/pre-dexed/flavorFR/debug/internal_impl-20.0.0-ad20a66631563c16d34f1bbffcbaf0f2b876d970.jar"
+        jar="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/libs/internal_impl-20.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d"/>
     <item
         dex="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/prysmradio/build/intermediates/pre-dexed/flavorFR/debug/commons-lang3-3.3.2-60f6f761eaeb37dd6b83a84a0f86ac3dc2ea24b0.jar"
         jar="/Users/fx.oxeda/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.3.2/90a3822c38ec8c996e84c16a3477ef632cbc87a3/commons-lang3-3.3.2.jar"

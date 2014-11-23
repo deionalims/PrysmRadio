@@ -34,7 +34,9 @@ public class PrysmRetrofitSpiceService extends RetrofitGsonSpiceService {
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create();
 
-        restAdapter.setConverter(new GsonConverter(gson));
+        restAdapter
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setConverter(new GsonConverter(gson));
         return restAdapter;
     }
 }
