@@ -24,4 +24,4 @@
     <item android:state_focused="true"                                                             android:drawable="@drawable/com_facebook_picker_list_focused" />
     <item                                                                                          android:drawable="@android:color/transparent" />
 </selector>
-<!-- From: file:/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/facebook/res/drawable/com_facebook_picker_item_background.xml --><!-- From: file:/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/facebook/build/intermediates/bundles/debug/res/drawable/com_facebook_picker_item_background.xml -->
+<!-- From: file:/space/products/PrysmRadio/facebook/res/drawable/com_facebook_picker_item_background.xml --><!-- From: file:/space/products/PrysmRadio/facebook/build/intermediates/bundles/debug/res/drawable/com_facebook_picker_item_background.xml -->

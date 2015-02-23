@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!-- From: file:/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/facebook/build/intermediates/bundles/debug/res/values-xhdpi-v4/values.xml -->
-    <eat-comment />
-
+    <!-- From: file:/space/products/PrysmRadio/facebook/build/intermediates/bundles/debug/res/values-xhdpi-v4/values.xml -->
+    <eat-comment/>
     <dimen name="com_facebook_picker_divider_width">2px</dimen>
-
 </resources>

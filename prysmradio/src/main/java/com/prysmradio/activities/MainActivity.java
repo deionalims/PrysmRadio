@@ -2,12 +2,11 @@ package com.prysmradio.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,18 +14,20 @@ import android.view.Window;
 
 import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
-import com.prysmradio.adapters.MainPagerAdapter;
 import com.prysmradio.fragments.BottomPlayerFragment;
 import com.prysmradio.utils.Constants;
+import com.prysmradio.views.DrawerView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
 
-public class MainActivity extends PrysmActivity implements ActionBar.TabListener {
+public class MainActivity extends PrysmActivity implements DrawerLayout.DrawerListener {
 
-    @InjectView(R.id.pager) ViewPager mainViewPager;
+    @InjectView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @InjectView(R.id.left_drawer) DrawerView mDrawerList;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,24 +37,15 @@ public class MainActivity extends PrysmActivity implements ActionBar.TabListener
 
         ButterKnife.inject(this);
 
-        mainViewPager.setOffscreenPageLimit(2);
-        MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
-        mainViewPager.setAdapter(adapter);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, 0, 0);
+        mDrawerToggle.syncState();
+
+        mDrawerLayout.setDrawerListener(this);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         bottomPlayerFragment = (BottomPlayerFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_bottom_player);
-
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.addTab(actionBar.newTab().setText(getString(R.string.tab_radio)).setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText(getString(R.string.tab_podcasts)).setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText(getString(R.string.tab_prysmradio)).setTabListener(this));
-
-        mainViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
-            @Override
-            public void onPageSelected(int position) {
-                getSupportActionBar().setSelectedNavigationItem(position);
-            }
-        });
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.getBoolean(getString(R.string.pref_auto_play), false)){
@@ -61,7 +53,38 @@ public class MainActivity extends PrysmActivity implements ActionBar.TabListener
         }
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+        mDrawerToggle.onDrawerSlide(drawerView, slideOffset);
+    }
+
+    @Override
+    public void onDrawerOpened(View drawerView) {
+        mDrawerToggle.onDrawerOpened(drawerView);
+    }
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+        mDrawerToggle.onDrawerClosed(drawerView);
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) {
+        mDrawerToggle.onDrawerStateChanged(newState);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -77,21 +100,12 @@ public class MainActivity extends PrysmActivity implements ActionBar.TabListener
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
-    }
-
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-        mainViewPager.setCurrentItem(tab.getPosition());
-
-        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-    }
-
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-        // hide the given tab
-    }
-
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-        // probably ignore this event
     }
 
     @OnClick(R.id.player_layout)

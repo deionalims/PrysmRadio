@@ -1,11 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="2" >
-
-    <dataSet config="main" >
-        <source path="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/facebook/src/main/assets" />
-    </dataSet>
-    <dataSet config="debug" >
-        <source path="/Users/fx.oxeda/AndroidStudioProjects/PrysmRadio/facebook/src/debug/assets" />
-    </dataSet>
-
-</merger>
+<merger version="3"><dataSet config="main"><source path="/space/products/PrysmRadio/facebook/src/main/assets"/></dataSet><dataSet config="debug"><source path="/space/products/PrysmRadio/facebook/src/debug/assets"/></dataSet></merger>
