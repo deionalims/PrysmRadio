@@ -14,6 +14,7 @@ import com.prysmradio.activities.PlayerActivity;
 import com.prysmradio.adapters.RadiosAdapter;
 import com.prysmradio.api.requests.RadiosListRequest;
 import com.prysmradio.objects.Radio;
+import com.prysmradio.services.RadioPlayerService;
 import com.prysmradio.utils.Constants;
 import com.prysmradio.utils.CurrentStreamInfo;
 
@@ -64,7 +65,9 @@ public class RadiosListFragment extends PrysmListFragment<Radio> implements Requ
         CurrentStreamInfo.getInstance().setCurrentRadio(radio);
 
         ((PrysmApplication) getActivity().getApplicationContext()).setServiceIsRunning(true);
-        Intent intent = new Intent(Constants.START_RADIO_SERVICE_ACTION);
+        Intent intent = new Intent(getActivity(), RadioPlayerService.class);
+        intent.setAction(Constants.START_RADIO_SERVICE_ACTION);
+
         intent.putExtra(Constants.AUDIO_URL_EXTRA, radio.getAACStreamURL());
 
         getActivity().startService(intent);

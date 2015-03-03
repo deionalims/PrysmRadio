@@ -16,6 +16,8 @@ import com.prysmradio.bus.events.UpdateCoverEvent;
 import com.prysmradio.bus.events.UpdatePlayerEvent;
 import com.prysmradio.bus.events.UpdatePodcastTitleEvent;
 import com.prysmradio.fragments.BottomPlayerFragment;
+import com.prysmradio.services.PodcastPlayerService;
+import com.prysmradio.services.RadioPlayerService;
 import com.prysmradio.utils.Constants;
 import com.prysmradio.utils.CurrentStreamInfo;
 import com.prysmradio.utils.Utils;
@@ -62,21 +64,27 @@ public class PrysmActivity extends BaseActivity {
     public void startStopAudioService() {
         if (!((PrysmApplication) getApplicationContext()).isServiceIsRunning()){
             if (CurrentStreamInfo.getInstance().getCurrentRadio() != null){
-                Intent intent = new Intent(Constants.START_RADIO_SERVICE_ACTION);
+                Intent intent = new Intent(this, RadioPlayerService.class);
+                intent.setAction(Constants.START_RADIO_SERVICE_ACTION);
                 intent.putExtra(Constants.AUDIO_URL_EXTRA, CurrentStreamInfo.getInstance().getCurrentRadio().getAACStreamURL());
                 startService(new Intent(intent));
             } else if (CurrentStreamInfo.getInstance().getPodcastEpisode() != null){
-                Intent intent = new Intent(Constants.START_PODCAST_SERVICE_ACTION);
+                Intent intent = new Intent(this, PodcastPlayerService.class);
+                intent.setAction(Constants.START_PODCAST_SERVICE_ACTION);
                 intent.putExtra(Constants.AUDIO_URL_EXTRA, CurrentStreamInfo.getInstance().getPodcastEpisode().getAudioUrl());
                 BusManager.getInstance().getBus().post(new UpdatePodcastTitleEvent(CurrentStreamInfo.getInstance().getPodcastEpisode().getTitle(), CurrentStreamInfo.getInstance().getPodcastEpisode().getSubtitle()));
                 startService(new Intent(intent));
             }
         } else {
             if (CurrentStreamInfo.getInstance().getCurrentRadio() != null){
-                startService(new Intent(Constants.STOP_RADIO_SERVICE_ACTION));
+                Intent intent = new Intent(this, RadioPlayerService.class);
+                intent.setAction(Constants.STOP_RADIO_SERVICE_ACTION);
+                startService(intent);
                 saveCurrentRadio();
             } else if (CurrentStreamInfo.getInstance().getPodcastEpisode() != null){
-                startService(new Intent(Constants.STOP_PODCAST_SERVICE_ACTION));
+                Intent intent = new Intent(this, PodcastPlayerService.class);
+                intent.setAction(Constants.STOP_PODCAST_SERVICE_ACTION);
+                startService(intent);
                 saveCurrentPodcastEdisode();
             }
         }

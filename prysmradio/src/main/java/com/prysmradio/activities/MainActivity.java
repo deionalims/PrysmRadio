@@ -1,10 +1,13 @@
 package com.prysmradio.activities;
 
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
@@ -15,6 +18,7 @@ import android.view.Window;
 import com.prysmradio.PrysmApplication;
 import com.prysmradio.R;
 import com.prysmradio.fragments.BottomPlayerFragment;
+import com.prysmradio.fragments.RadiosListFragment;
 import com.prysmradio.utils.Constants;
 import com.prysmradio.views.DrawerView;
 
@@ -51,6 +55,8 @@ public class MainActivity extends PrysmActivity implements DrawerLayout.DrawerLi
         if (prefs.getBoolean(getString(R.string.pref_auto_play), false)){
             startStopAudioService();
         }
+
+        replaceFragment(new RadiosListFragment(), false, null);
     }
 
     @Override
@@ -96,6 +102,17 @@ public class MainActivity extends PrysmActivity implements DrawerLayout.DrawerLi
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("image/*");
         return intent;
+    }
+
+    private void replaceFragment(Fragment fragment, boolean addToBackStack, String tag){
+        FragmentTransaction ft = getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content_frame, fragment);
+        if (addToBackStack){
+            ft.addToBackStack(tag);
+        }
+
+        ft.commit();
     }
 
     @Override
